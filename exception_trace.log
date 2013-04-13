@@ -1,0 +1,123 @@
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+C_STRING            make @1                a_string_not_void:           
+<0000000003A80468>                         Precondition violated.        Fail
+-------------------------------------------------------------------------------
+IMAGE               init_bg_window @1                                   
+<0000000003A80450>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @3                                             
+<0000000003A80408>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003A80408>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+C_STRING            make @2                count:                       
+<0000000003A80468>                         Feature call on void target.  Exit
+-------------------------------------------------------------------------------
+C_STRING            make @2                                             
+<0000000003A80468>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+IMAGE               init_bg_window @1                                   
+<0000000003A80450>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+GAME                make @3                                             
+<0000000003A80408>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003A80408>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+C_STRING            make @1                a_string_not_void:           
+<0000000003AB0480>                         Precondition violated.        Fail
+-------------------------------------------------------------------------------
+IMAGE               init_bg_window @1                                   
+<0000000003AB0468>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @3                                             
+<0000000003AB0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003AB0420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+PLAYER              get_bmp_w              Unhandled exception:         
+<0000000003AD0474>  (From SDL_WRAPPER)     External event.               Fail
+-------------------------------------------------------------------------------
+PLAYER              get_bmp_w                                           
+<0000000003AD0474>  (From SDL_WRAPPER)     Routine failure.              Fail
+-------------------------------------------------------------------------------
+PLAYER              apply_img @2                                        
+<0000000003AD0474>  (From IMAGE)           Routine failure.              Fail
+-------------------------------------------------------------------------------
+PLAYER              apply_sprite @1                                     
+<0000000003AD0474>  (From SPRITE)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+PLAYER              apply_player @1                                     
+<0000000003AD0474>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @17                                            
+<0000000003AD0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003AD0420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+SQLITE_MODIFY_STATEMENT
+                    make @6                a_db_is_readable:
+<0000000003E90B70>  (From SQLITE_STATEMENT)
+                                           Precondition violated.        Fail
+-------------------------------------------------------------------------------
+DATABASE            drop_table @1                                       
+<0000000003E90AEC>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @64                                            
+<0000000003E90060>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003E90060>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+SQLITE_MODIFY_STATEMENT
+                    make @7                a_statement_is_complete:
+<00000000039635D0>  (From SQLITE_STATEMENT)
+                                           Precondition violated.        Fail
+-------------------------------------------------------------------------------
+DATABASE            update_table @1                                     
+<0000000003960528>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @37                                            
+<0000000003960420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003960420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
