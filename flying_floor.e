@@ -10,6 +10,19 @@ class
 inherit
 	GROUND
 
+create
+	make
+
+feature {GAME} -- Make
+
+
+	make(a_x, a_y:INTEGER_16)
+	-- Initialisation
+		do
+			assigner_ptr_image
+			set_start_pos(a_x, a_y)
+		end
+
 feature {GAME} -- Image
 
 	----- Variables de classe -----
@@ -66,14 +79,5 @@ feature {GAME} -- Coordonnées
 			l_ff_box[3] := ff_w
 			l_ff_box[4] := ff_h
 			Result := l_ff_box
-		end
-
-feature {GAME} -- Others
-
-	init_flying_floor(a_x, a_y:INTEGER_16)
-	-- Initialisation
-		do
-			assigner_ptr_image
-			set_start_pos(a_x, a_y)
 		end
 end

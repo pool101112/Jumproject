@@ -6,6 +6,7 @@
 			<assertions precondition="true" postcondition="true" check="true" invariant="true" loop="true" supplier_precondition="true"/>
 		</option>
 		<setting name="console_application" value="false"/>
+		<setting name="concurrency" value="thread"/>
 		<external_include location="..\..\..\..\SDL-1.2.14\include\SDL">
 			<condition>
 				<platform value="windows"/>
@@ -22,6 +23,11 @@
 			</condition>
 		</external_include>
 		<external_include location="..\..\..\..\SDL_ttf-2.0.11\include">
+			<condition>
+				<platform value="windows"/>
+			</condition>
+		</external_include>
+		<external_include location="..\..\..\..\SDL_mixer-1.2.12\include">
 			<condition>
 				<platform value="windows"/>
 			</condition>
@@ -51,9 +57,26 @@
 				<platform value="windows"/>
 			</condition>
 		</external_library>
-		<precompile name="base_pre" location="$ISE_PRECOMP\base.ecf"/>
+		<external_library location="-lSDL_ttf">
+			<condition>
+				<platform excluded_value="windows"/>
+			</condition>
+		</external_library>
+		<external_library location="..\..\..\SDL_mixer-1.2.12\lib\x86\SDL_mixer.lib">
+			<condition>
+				<platform value="windows"/>
+			</condition>
+		</external_library>
+		<external_library location="-lSDL_mixer">
+			<condition>
+				<platform excluded_value="windows"/>
+			</condition>
+		</external_library>
+		<precompile name="base-mt_precompile" location="$ISE_PRECOMP\base-mt.ecf"/>
 		<library name="base" location="$ISE_LIBRARY\library\base\base.ecf"/>
+		<library name="net" location="$ISE_LIBRARY\library\net\net.ecf"/>
 		<library name="sqlite" location="$ISE_LIBRARY\unstable\library\persistency\database\sqlite3\sqlite.ecf"/>
+		<library name="thread" location="$ISE_LIBRARY\library\thread\thread.ecf"/>
 		<cluster name="jumproject" location=".\" recursive="true">
 			<file_rule>
 				<exclude>/EIFGENs$</exclude>

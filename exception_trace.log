@@ -121,3 +121,1590 @@ GAME                make @37
 GAME                root's creation                                     
 <0000000003960420>                         Routine failure.              Exit
 -------------------------------------------------------------------------------
+Catcall detected in {STRING_8}.plus for arg#1: expected READABLE_STRING_8 but got MEM_CONST
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    put_string @1          extendible:
+<0000000003946DE0>  (From SOCKET)          Precondition violated.        Fail
+-------------------------------------------------------------------------------
+GAME                playing @43                                         
+<0000000003940420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003940420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003940420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    put_string @1          extendible:
+<0000000003B785C8>  (From SOCKET)          Precondition violated.        Fail
+-------------------------------------------------------------------------------
+GAME                playing @43                                         
+<0000000003B70420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003B70420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003B70420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    put_string @1          extendible:
+<0000000003A55C40>  (From SOCKET)          Precondition violated.        Fail
+-------------------------------------------------------------------------------
+GAME                playing @43                                         
+<0000000003A50420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003A50420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003A50420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          WSAECONNRESET: Connection reset by peer.:
+<0000000003B5A1E4>  (From SOCKET)          Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<0000000003B5A1E4>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<0000000003B5A1E4>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_character @2      
+<0000000003B5A1E4>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_line @6           
+<0000000003B5A1E4>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                playing @39                                         
+<0000000003B40420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003B40420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003B40420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          WSAECONNRESET: Connection reset by peer.:
+<0000000003AC7DA0>  (From SOCKET)          Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<0000000003AC7DA0>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<0000000003AC7DA0>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_character @2      
+<0000000003AC7DA0>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_line @3           
+<0000000003AC7DA0>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                playing @44                                         
+<0000000003AC0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003AC0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003AC0420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          WSAECONNRESET: Connection reset by peer.:
+<00000000039F45CC>  (From SOCKET)          Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<00000000039F45CC>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<00000000039F45CC>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_character @2      
+<00000000039F45CC>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_line @6           
+<00000000039F45CC>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                playing @19                                         
+<00000000039F0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<00000000039F0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<00000000039F0420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          WSAECONNRESET: Connection reset by peer.:
+<0000000003A09C3C>  (From SOCKET)          Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<0000000003A09C3C>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<0000000003A09C3C>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_character @2      
+<0000000003A09C3C>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_line @6           
+<0000000003A09C3C>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                playing @19                                         
+<0000000003A00420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003A00420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003A00420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          WSAECONNRESET: Connection reset by peer.:
+<000000000399A4D0>  (From SOCKET)          Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<000000000399A4D0>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<000000000399A4D0>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_character @2      
+<000000000399A4D0>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_line @3           
+<000000000399A4D0>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                playing @24                                         
+<0000000003990420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003990420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003990420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+GAME                playing @72            close:                       
+<00000000039E0420>                         Feature call on void target.  Fail
+-------------------------------------------------------------------------------
+GAME                playing @72                                         
+<00000000039E0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<00000000039E0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<00000000039E0420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+GAME                playing @73            close:                       
+<0000000003B40420>                         Feature call on void target.  Fail
+-------------------------------------------------------------------------------
+GAME                playing @73                                         
+<0000000003B40420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003B40420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003B40420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          WSAECONNRESET: Connection reset by peer.:
+<0000000003944F2C>  (From SOCKET)          Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<0000000003944F2C>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<0000000003944F2C>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_character @2      
+<0000000003944F2C>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_line @6           
+<0000000003944F2C>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                playing @19                                         
+<0000000003940420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003940420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003940420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          WSAECONNRESET: Connection reset by peer.:
+<0000000003998730>  (From SOCKET)          Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<0000000003998730>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<0000000003998730>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_character @2      
+<0000000003998730>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_line @3           
+<0000000003998730>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                playing @44                                         
+<0000000003990420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003990420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003990420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+GAME                playing @39            read_integer_16:             
+<0000000003920420>                         Feature call on void target.  Fail
+-------------------------------------------------------------------------------
+GAME                playing @39                                         
+<0000000003920420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003920420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003920420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          WSAECONNRESET: Connection reset by peer.:
+<00000000039399F0>  (From SOCKET)          Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<00000000039399F0>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<00000000039399F0>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_integer_16 @2     
+<00000000039399F0>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                playing @47                                         
+<0000000003930420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003930420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003930420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+GAME                playing @39            read_integer_16:             
+<0000000003AE0420>                         Feature call on void target.  Fail
+-------------------------------------------------------------------------------
+GAME                playing @39                                         
+<0000000003AE0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003AE0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003AE0420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          WSAECONNRESET: Connection reset by peer.:
+<0000000003AE83A0>  (From SOCKET)          Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<0000000003AE83A0>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<0000000003AE83A0>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_integer_16 @2     
+<0000000003AE83A0>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                playing @47                                         
+<0000000003AE0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003AE0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003AE0420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    put_integer_16 @1      extendible:
+<0000000003BE6420>  (From SOCKET)          Precondition violated.        Fail
+-------------------------------------------------------------------------------
+GAME                playing @45                                         
+<0000000003BE0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003BE0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003BE0420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+GAME                playing @39            read_integer_16:             
+<0000000003800420>                         Feature call on void target.  Fail
+-------------------------------------------------------------------------------
+GAME                playing @39                                         
+<0000000003800420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003800420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003800420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_put_stream           Net error #10053:
+<0000000003A23D80>  (From SOCKET)          Runtime I/O error.            Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_put_stream           
+<0000000003A23D80>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    put_managed_pointer @5 
+<0000000003A23D80>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    put_integer_16 @3      
+<0000000003A23D80>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                playing @46                                         
+<0000000003A20420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003A20420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003A20420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+GAME                playing @39            read_integer_16:             
+<00000000039F0420>                         Feature call on void target.  Fail
+-------------------------------------------------------------------------------
+GAME                playing @39                                         
+<00000000039F0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<00000000039F0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<00000000039F0420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          WSAECONNRESET: Connection reset by peer.:
+<0000000003AEFDB0>  (From SOCKET)          Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<0000000003AEFDB0>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<0000000003AEFDB0>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_integer_16 @2     
+<0000000003AEFDB0>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                playing @47                                         
+<0000000003AE0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003AE0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003AE0420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          WSAECONNRESET: Connection reset by peer.:
+<0000000003AF56A0>  (From SOCKET)          Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<0000000003AF56A0>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<0000000003AF56A0>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_integer_16 @2     
+<0000000003AF56A0>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                playing @47                                         
+<0000000003AF0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003AF0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003AF0420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          WSAECONNRESET: Connection reset by peer.:
+<000000000399B970>  (From SOCKET)          Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<000000000399B970>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<000000000399B970>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_integer_16 @2     
+<000000000399B970>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                playing @47                                         
+<0000000003990420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003990420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003990420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    put_integer_16 @1      extendible:
+<0000000003978D90>  (From SOCKET)          Precondition violated.        Fail
+-------------------------------------------------------------------------------
+GAME                playing @45                                         
+<0000000003970420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003970420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003970420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_listen               WSAEINVAL: The socket is already bound to an address.:
+<0000000003A684B4>                         Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_listen               
+<0000000003A684B4>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    listen @7              
+<0000000003A684B4>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                playing @36                                         
+<0000000003A60420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003A60420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003A60420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          WSAECONNRESET: Connection reset by peer.:
+<00000000037C6510>  (From SOCKET)          Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<00000000037C6510>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<00000000037C6510>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_character @2      
+<00000000037C6510>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_line @3           
+<00000000037C6510>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                playing @44                                         
+<00000000037C0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<00000000037C0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<00000000037C0420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_put_stream           Net error #10053:
+<0000000003DA9228>  (From SOCKET)          Runtime I/O error.            Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_put_stream           
+<0000000003DA9228>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    put_managed_pointer @5 
+<0000000003DA9228>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    put_integer_16 @3      
+<0000000003DA9228>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                playing @46                                         
+<0000000003DA0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003DA0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003DA0420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          WSAECONNRESET: Connection reset by peer.:
+<0000000004A119EC>  (From SOCKET)          Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<0000000004A119EC>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<0000000004A119EC>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_integer_16 @2     
+<0000000004A119EC>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                playing @42                                         
+<0000000004A110BC>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000004A110BC>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000004A110BC>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          WSAECONNRESET: Connection reset by peer.:
+<0000000004561AF4>  (From SOCKET)          Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<0000000004561AF4>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<0000000004561AF4>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_integer_16 @2     
+<0000000004561AF4>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                playing @44                                         
+<00000000045610BC>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<00000000045610BC>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<00000000045610BC>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          WSAECONNRESET: Connection reset by peer.:
+<0000000003AC55EC>  (From SOCKET)          Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<0000000003AC55EC>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<0000000003AC55EC>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_integer_16 @2     
+<0000000003AC55EC>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                playing @44                                         
+<0000000003AC0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003AC0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003AC0420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          WSAECONNRESET: Connection reset by peer.:
+<000000000391840C>  (From SOCKET)          Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<000000000391840C>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<000000000391840C>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_integer_16 @2     
+<000000000391840C>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                playing @44                                         
+<0000000003910420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003910420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003910420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+GAME                multiplayer @89        close:                       
+<0000000003C30420>                         Feature call on void target.  Fail
+-------------------------------------------------------------------------------
+GAME                multiplayer @89                                     
+<0000000003C30420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003C30420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003C30420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+GAME                multiplayer @44        read_integer_16:             
+<00000000037A0420>                         Feature call on void target.  Fail
+-------------------------------------------------------------------------------
+GAME                multiplayer @44                                     
+<00000000037A0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<00000000037A0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<00000000037A0420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+GAME                multiplayer @44        read_integer_16:             
+<0000000003D00420>                         Feature call on void target.  Fail
+-------------------------------------------------------------------------------
+GAME                multiplayer @44                                     
+<0000000003D00420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003D00420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003D00420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          WSAECONNRESET: Connection reset by peer.:
+<00000000046F21D8>  (From SOCKET)          Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<00000000046F21D8>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<00000000046F21D8>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_integer_16 @2     
+<00000000046F21D8>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWRK_CLIENT       read @1                                             
+<00000000046F21C0>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                multiplayer @42                                     
+<00000000046F10BC>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<00000000046F10BC>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<00000000046F10BC>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+GAME                multiplayer @74        close:                       
+<0000000003A70420>                         Feature call on void target.  Fail
+-------------------------------------------------------------------------------
+GAME                multiplayer @74                                     
+<0000000003A70420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003A70420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003A70420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          Net error #10053:
+<0000000003BF77F4>  (From SOCKET)          Runtime I/O error.            Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<0000000003BF77F4>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<0000000003BF77F4>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_integer_16 @2     
+<0000000003BF77F4>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWRK_SERVER       read @1                                             
+<0000000003BF7614>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                multiplayer @38                                     
+<0000000003BF0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003BF0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003BF0420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          WSAECONNRESET: Connection reset by peer.:
+<0000000003935DC0>  (From SOCKET)          Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<0000000003935DC0>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<0000000003935DC0>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_integer_16 @2     
+<0000000003935DC0>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWRK_CLIENT       read @1                                             
+<0000000003935B5C>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                multiplayer @42                                     
+<0000000003930420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003930420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003930420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          WSAECONNRESET: Connection reset by peer.:
+<0000000003A75D6C>  (From SOCKET)          Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<0000000003A75D6C>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<0000000003A75D6C>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_integer_16 @2     
+<0000000003A75D6C>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWRK_SERVER       read @1                                             
+<0000000003A75B8C>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                multiplayer @38                                     
+<0000000003A70420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003A70420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003A70420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+GAME                multiplayer @78        close:                       
+<00000000038E0420>                         Feature call on void target.  Fail
+-------------------------------------------------------------------------------
+GAME                multiplayer @78                                     
+<00000000038E0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<00000000038E0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<00000000038E0420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          WSAECONNRESET: Connection reset by peer.:
+<00000000047122D4>  (From SOCKET)          Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<00000000047122D4>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<00000000047122D4>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_integer_16 @2     
+<00000000047122D4>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWRK_CLIENT       read @1                                             
+<00000000047122BC>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                multiplayer @42                                     
+<00000000047110BC>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<00000000047110BC>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<00000000047110BC>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+GAME                multiplayer @78        close:                       
+<0000000003910420>                         Feature call on void target.  Fail
+-------------------------------------------------------------------------------
+GAME                multiplayer @78                                     
+<0000000003910420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003910420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003910420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          WSAECONNRESET: Connection reset by peer.:
+<0000000003996810>  (From SOCKET)          Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<0000000003996810>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<0000000003996810>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_integer_16 @2     
+<0000000003996810>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWRK_CLIENT       read @1                                             
+<00000000039965AC>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                multiplayer @42                                     
+<0000000003990420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003990420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003990420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          WSAECONNRESET: Connection reset by peer.:
+<0000000004762100>  (From SOCKET)          Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<0000000004762100>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<0000000004762100>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_integer_16 @2     
+<0000000004762100>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWRK_SERVER       read @1                                             
+<00000000047620E8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                multiplayer @38                                     
+<00000000047610BC>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<00000000047610BC>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<00000000047610BC>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          WSAECONNRESET: Connection reset by peer.:
+<00000000045A20E8>  (From SOCKET)          Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<00000000045A20E8>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<00000000045A20E8>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_integer_16 @2     
+<00000000045A20E8>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWRK_SERVER       read @1                                             
+<00000000045A20D0>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                multiplayer @38                                     
+<00000000045A10BC>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<00000000045A10BC>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<00000000045A10BC>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          WSAECONNRESET: Connection reset by peer.:
+<0000000003926564>  (From SOCKET)          Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<0000000003926564>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<0000000003926564>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_integer_16 @2     
+<0000000003926564>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWRK_SERVER       read @1                                             
+<0000000003926384>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                multiplayer @38                                     
+<0000000003920420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @16                                            
+<0000000003920420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003920420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          WSAECONNRESET: Connection reset by peer.:
+<0000000003AA9930>  (From SOCKET)          Developer exception.          Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_read_stream          
+<0000000003AA9930>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_to_managed_pointer @7
+<0000000003AA9930>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    read_integer_16 @2     
+<0000000003AA9930>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWRK_SERVER       read @1                                             
+<0000000003AA9750>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                multiplayer @38                                     
+<0000000003AA0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @26                                            
+<0000000003AA0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003AA0420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+GAME                multiplayer @76        close:                       
+<0000000003890420>                         Feature call on void target.  Fail
+-------------------------------------------------------------------------------
+GAME                multiplayer @76                                     
+<0000000003890420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @30                                            
+<0000000003890420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003890420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+MULTI_THREAD        launch @1              thread_capable:              
+<00000000038F108C>  (From THREAD)          Precondition violated.        Fail
+-------------------------------------------------------------------------------
+GAME                make @9                                             
+<00000000038F0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<00000000038F0420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+******************************** Thread exception *****************************
+In thread           Root thread            0x0 (thread id)
+*******************************************************************************
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+MULTI_THREAD        launch @2              is_launchable:               
+<0000000003AA3A10>  (From THREAD)          Precondition violated.        Fail
+-------------------------------------------------------------------------------
+GAME                multiplayer @24                                     
+<0000000003A90420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @22                                            
+<0000000003A90420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003A90420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+******************************** Thread exception *****************************
+In thread           Root thread            0x0 (thread id)
+*******************************************************************************
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+MULTI_THREAD        launch @2              is_launchable:               
+<0000000003BE200C>  (From THREAD)          Precondition violated.        Fail
+-------------------------------------------------------------------------------
+GAME                multiplayer @24                                     
+<0000000003BD0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @22                                            
+<0000000003BD0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003BD0420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+******************************** Thread exception *****************************
+In thread           Root thread            0x0 (thread id)
+*******************************************************************************
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+MULTI_THREAD        launch @2              is_launchable:               
+<0000000003B24D88>  (From THREAD)          Precondition violated.        Fail
+-------------------------------------------------------------------------------
+GAME                multiplayer @24                                     
+<0000000003B20420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @22                                            
+<0000000003B20420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003B20420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+******************************** Thread exception *****************************
+In thread           Child thread           0x210 (thread id)
+*******************************************************************************
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    put_integer_16 @1      extendible:
+<0000000003B4C318>  (From SOCKET)          Precondition violated.        Fail
+-------------------------------------------------------------------------------
+NETWRK_CLIENT       send @1                                             
+<0000000003B4C0B4>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+MULTI_THREAD        execute @6                                          
+<0000000003B4C06C>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+MULTI_THREAD        thr_main @3                                         
+<0000000003B4C06C>  (From THREAD)          Routine failure.              Rescue
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003B40420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+******************************** Thread exception *****************************
+In thread           Root thread            0x0 (thread id)
+*******************************************************************************
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+MULTI_THREAD        launch @2              is_launchable:               
+<0000000003B4C06C>  (From THREAD)          Precondition violated.        Fail
+-------------------------------------------------------------------------------
+GAME                multiplayer @24                                     
+<0000000003B40420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @22                                            
+<0000000003B40420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003B40420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+******************************** Thread exception *****************************
+In thread           Root thread            0x0 (thread id)
+*******************************************************************************
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+MULTI_THREAD        launch @2              is_launchable:               
+<0000000003B609B0>  (From THREAD)          Precondition violated.        Fail
+-------------------------------------------------------------------------------
+GAME                multiplayer @24                                     
+<0000000003B50420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @22                                            
+<0000000003B50420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003B50420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+******************************** Thread exception *****************************
+In thread           Child thread           0x134 (thread id)
+*******************************************************************************
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_put_stream           Net error #10053:
+<0000000003AE9450>  (From SOCKET)          Runtime I/O error.            Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    c_put_stream           
+<0000000003AE9450>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    put_managed_pointer @5 
+<0000000003AE9450>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    put_integer_16 @3      
+<0000000003AE9450>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWRK_SERVER       send @2                                             
+<0000000003AE9270>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+MULTI_THREAD        execute @5                                          
+<0000000003AE9228>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+MULTI_THREAD        thr_main @3                                         
+<0000000003AE9228>  (From THREAD)          Routine failure.              Rescue
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003AE0420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+jumproject: system execution failed.
+Following is the set of recorded exceptions:
+
+******************************** Thread exception *****************************
+In thread           Root thread            0x0 (thread id)
+*******************************************************************************
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+MENU                sdl_blitsurface        Unhandled exception:         
+<0000000003BD0600>  (From SDL_WRAPPER)     External event.               Fail
+-------------------------------------------------------------------------------
+MENU                sdl_blitsurface                                     
+<0000000003BD0600>  (From SDL_WRAPPER)     Routine failure.              Fail
+-------------------------------------------------------------------------------
+MENU                apply_img @8                                        
+<0000000003BD0600>  (From IMAGE)           Routine failure.              Fail
+-------------------------------------------------------------------------------
+MENU                apply_background @2                                 
+<0000000003BD0600>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                main_menu @36                                       
+<0000000003BD0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                make @7                                             
+<0000000003BD0420>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME                root's creation                                     
+<0000000003BD0420>                         Routine failure.              Exit
+-------------------------------------------------------------------------------

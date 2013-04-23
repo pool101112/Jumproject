@@ -10,7 +10,21 @@ class
 inherit
 	SPRITE
 
+create
+	make
+
 feature -- Images
+
+
+	make
+	-- Initialisation du sprite
+		do
+			animation_files_path
+			assigner_ptr_image
+			set_start(556, 279)
+			set_velocity(4, 3)
+			assigner_spawn
+		end
 
 	animation_files_path
 	-- Association des ressources aux variables
@@ -22,6 +36,31 @@ feature -- Images
 			go_right_path := "Ressources/yoma_go_right.png"
 			jump_left_path := "Ressources/yoma_jump_left.png"
 			jump_right_path := "Ressources/yoma_jump_right.png"
+		end
+
+	animate
+		do
+			if old_sprite_x < sprite_x then
+				looking_right := True
+				if old_sprite_y /= sprite_y then
+					assigner_sprite (jump_right_path)
+				elseif old_sprite_y = sprite_y then
+					assigner_sprite (go_right_path)
+				end
+			elseif old_sprite_x > sprite_x then
+				looking_right := False
+				if old_sprite_y /= sprite_y then
+					assigner_sprite (jump_left_path)
+				elseif old_sprite_y = sprite_y then
+					assigner_sprite (go_left_path)
+				end
+			else
+				if looking_right then
+					assigner_sprite (wait_right_path)
+				else
+					assigner_sprite (wait_left_path)
+				end
+			end
 		end
 
 	assigner_ptr_image
@@ -139,17 +178,4 @@ feature -- Moves
 			end
 			gravity(a_object_box, a_object_box2)
 		end
-
-feature -- Others
-
-	init_player
-	-- Initialisation du sprite
-		do
-			animation_files_path
-			assigner_ptr_image
-			set_start(556, 279)
-			set_velocity(4, 3)
-			assigner_spawn
-		end
-
 end

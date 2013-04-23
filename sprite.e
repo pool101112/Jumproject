@@ -12,7 +12,7 @@ inherit
 
 	GROUND
 
-feature {GAME} -- Images
+feature {GAME, MULTI_THREAD} -- Images
 	sprite_ctr, jump_ctr:INTEGER_16
 	is_moving_left, is_moving_right, is_jumping, is_in_air, looking_right:BOOLEAN
 	spawn_left_path, wait_left_path, wait_right_path, go_left_path, go_right_path, jump_left_path, jump_right_path:STRING
@@ -61,8 +61,8 @@ feature {GAME} -- Images
 		end
 
 
-feature {GAME} -- Moves
-	sprite_x, sprite_y, sprite_w, sprite_h, x_vel, y_vel:INTEGER_16
+feature {GAME, MULTI_THREAD} -- Moves
+	old_sprite_x, old_sprite_y, sprite_x, sprite_y, sprite_w, sprite_h, x_vel, y_vel:INTEGER_16
 
 	set_x_vel(a_velocity:INTEGER_16)
 	-- Ajuste la vélocité du déplacement latéral
@@ -80,6 +80,19 @@ feature {GAME} -- Moves
 			y_vel := a_velocity
 		end
 
+	change_sprite_x (a_x:INTEGER_16)
+		do
+			old_sprite_x := sprite_x
+			sprite_x := a_x
+		end
+
+
+	change_sprite_y (a_y:INTEGER_16)
+		do
+			old_sprite_y := sprite_y
+			sprite_y := a_y
+		end
+
 	move_left(a_object_box, a_object_box_two:ARRAY[INTEGER])
 	-- Effectue un mouvement à gauche
 		require
@@ -91,6 +104,7 @@ feature {GAME} -- Moves
 			l_coll:COLLISION
 		do
 			create l_coll
+			old_sprite_x := sprite_x
 			sprite_x := sprite_x - x_vel
 			l_sprite_box := fill_sprite_box
 			if sprite_x < 0 then
@@ -113,9 +127,10 @@ feature {GAME} -- Moves
 			l_coll:COLLISION
 		do
 			create l_coll
+			old_sprite_x := sprite_x
 			sprite_x := sprite_x + x_vel
 			l_sprite_box := fill_sprite_box
-			if (sprite_x + (sprite_w // 7)) > 556 then
+			if (sprite_x + (sprite_w // 8)) > 556 then
 				undo_move(x_vel - x_vel - x_vel)
 			elseif l_coll.is_collision (a_object_box, l_sprite_box) then
 				undo_move(x_vel - x_vel - x_vel)
@@ -132,7 +147,7 @@ feature {GAME} -- Moves
 			create l_sprite_box.make_filled (0, 1, 4)
 			l_sprite_box[1] := sprite_x
 			l_sprite_box[2] := sprite_y
-			l_sprite_box[3] := sprite_w  // 7
+			l_sprite_box[3] := sprite_w  // 8
 			l_sprite_box[4] := sprite_h
 			Result := l_sprite_box
 		end
@@ -164,6 +179,7 @@ feature {GAME} -- Moves
 		do
 			if jump_ctr <= 30 then
 				create l_coll
+				old_sprite_y := sprite_y
 				sprite_y := sprite_y - (y_vel*2)
 				jump_ctr := jump_ctr + 1
 				l_sprite_box := fill_sprite_box
@@ -187,6 +203,7 @@ feature {GAME} -- Moves
 			l_coll:COLLISION
 		do
 			create l_coll
+			old_sprite_y := sprite_y
 			sprite_y := sprite_y + y_vel
 			l_sprite_box := fill_sprite_box
 			is_in_air := true

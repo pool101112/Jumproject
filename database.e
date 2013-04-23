@@ -7,9 +7,18 @@ note
 class
 	DATABASE
 
+create
+	make
+
 feature {GAME} -- Création et Destruction
 
 	db:SQLITE_DATABASE
+
+	make
+		do
+			create_database
+			create_table
+		end
 
 	create_database
 	-- Création de la Database
@@ -18,9 +27,6 @@ feature {GAME} -- Création et Destruction
 		do
 			create db.make_create_read_write ("Database/pointage.sqlite")
 			create l_query.make ("SELECT name FROM sqlite_master ORDER BY name;", db)
-			across l_query.execute_new as l_cursor loop
-				print (" - table: " + l_cursor.item.string_value (1) + "%N")
-			end
 		end
 
 	create_table
@@ -49,7 +55,7 @@ feature {GAME} -- Création et Destruction
 
 feature {GAME} -- Modifications
 
-	insert_table(a_player_name:STRING)
+	insert_table(a_player_name:STRING; a_time_alive:INTEGER_32)
 	-- Insertion d'un nouveau joueur dans la Database
 		local
 			l_insert: SQLITE_INSERT_STATEMENT
@@ -60,7 +66,7 @@ feature {GAME} -- Modifications
 			db.begin_transaction (False)
 
 
-			l_insert.execute_with_arguments ([a_player_name, create {SQLITE_DOUBLE_ARG}.make (":SCORE", 0), create {SQLITE_DOUBLE_ARG}.make (":TIME_PLAYED",0)])
+			l_insert.execute_with_arguments ([a_player_name, create {SQLITE_DOUBLE_ARG}.make (":SCORE", 0), create {SQLITE_INTEGER_ARG}.make (":TIME_PLAYED", a_time_alive)])
 
 			db.commit
 		end
@@ -160,8 +166,8 @@ feature {GAME} -- Données
 		local
 			l_query: SQLITE_QUERY_STATEMENT
 		do
-			create l_query.make ("SELECT * FROM `Scores` WHERE `Joueur`=?1 ;", db)
-			across l_query.execute_new_with_arguments([a_player_name]) as l_cursor loop
+			create l_query.make ("SELECT * FROM `Scores` WHERE `Joueur`='"+ a_player_name +"' ;", db)
+			across l_query.execute_new as l_cursor loop
 				Result := (l_cursor.item.integer_value (2))
 			end
 		end
@@ -170,8 +176,8 @@ feature {GAME} -- Données
 		local
 			l_query: SQLITE_QUERY_STATEMENT
 		do
-			create l_query.make ("SELECT * FROM Scores WHERE Joueur=?1 ;", db)
-			across l_query.execute_new_with_arguments([a_player_name]) as l_cursor loop
+			create l_query.make ("SELECT * FROM `Scores` WHERE `Joueur`='"+ a_player_name +"' ;", db)
+			across l_query.execute_new as l_cursor loop
 				Result := (l_cursor.item.integer_value (3))
 			end
 		end

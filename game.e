@@ -20,91 +20,306 @@ feature {NONE} -- Main
 --			l_memoire.full_collect
 --			{SDL_WRAPPER}.SDL_Quitter()
 --		end
-	make
-			-- Run application.
-		local
-			l_screen, l_event_ptr:POINTER
-			l_exit, l_play_game:BOOLEAN
 
-			l_menu:MENU
+	make
+	-- Run application.
+		local
+			l_screen:POINTER
+		do
+			-- Video
+			init_sdl_video
+			l_screen := init_screen
+				-- Titre et icone de la fenêtre
+			apply_title
+			apply_icon
+			-- Audio
+			init_sdl_audio
+			start_music
+			-- Menu principal
+			main_menu(l_screen)
+		end
+
+	main_menu(a_screen:POINTER)
+		local
+			l_event_ptr:POINTER
+			l_exit, l_go_singleplayer_menu, l_go_multiplayer_menu, l_egg_is_hidden:BOOLEAN
+
+			l_menu, l_singleplayer_button, l_multiplayer_button, l_quit_button, l_egg:MENU
 		do
 			-- Initialisation de l_screen
-			create l_menu
-
-			init_sdl
-			l_screen := init_screen
-			-- Initialisation de l'image de menu
-			l_menu.assigner_ptr_image
+			create l_menu.make ("Ressources/Images/menu_screen3.png")
+			create l_singleplayer_button.make ("Ressources/Images/Single_Player2.png")
+			create l_multiplayer_button.make ("Ressources/Images/Multiplayer2.png")
+			create l_quit_button.make ("Ressources/Images/Quit2.png")
+			create l_egg.make ("Ressources/Images/yoshi_egg.png")
+			l_egg.change_x(160)
 			l_event_ptr := size_of_event_memory_allocation
 			from
 			until
 				l_exit
 			loop
-				if l_play_game then
-					playing(l_screen)
+				if l_go_singleplayer_menu then
+					singleplayer_menu(a_screen)
+					l_go_singleplayer_menu := False
+				elseif l_go_multiplayer_menu then
+					multiplayer_menu(a_screen)
+					l_go_multiplayer_menu := False
 				end
-				l_play_game := False
 				from
 				until
-					{SDL_WRAPPER}.SDL_PollEvent(l_event_ptr) < 1
+					{SDL_WRAPPER}.SDL_PollEvent (l_event_ptr) < 1
 				loop
+					l_egg_is_hidden := True
+					l_singleplayer_button.assign_img_path ("Ressources/Images/Single_Player2.png")
+					l_quit_button.assign_img_path ("Ressources/Images/Quit2.png")
 					if quit_request(l_event_ptr) then
 						l_exit := True
-					elseif start_game(l_event_ptr) then
-						l_play_game := True
+					elseif over_button(l_event_ptr, l_singleplayer_button) then
+						l_egg.change_y(l_singleplayer_button.y + 5)
+						l_egg_is_hidden := False
+						if click(l_event_ptr) then
+							l_go_singleplayer_menu := True
+							{SDL_WRAPPER}.Mix_HaltMusic
+						end
+					elseif over_button(l_event_ptr, l_multiplayer_button) then
+						l_egg.change_y(l_multiplayer_button.y + 5)
+						l_egg_is_hidden := False
+						if click(l_event_ptr) then
+							l_go_multiplayer_menu := True
+						end
+					elseif over_button(l_event_ptr, l_quit_button) then
+						l_egg.change_y (l_quit_button.y + 5)
+						l_egg_is_hidden := False
+						if click(l_event_ptr) then
+							l_exit := True
+						end
 					end
 				end
-				l_menu.apply_background (l_screen)
-				refresh(l_screen, 100)
+				l_menu.apply_background (a_screen)
+				l_singleplayer_button.assigner_ptr_image
+				l_singleplayer_button.apply_element_with_coordinates (a_screen, 200, 100)
+				l_multiplayer_button.assigner_ptr_image
+				l_multiplayer_button.apply_element_with_coordinates (a_screen, 200, (l_singleplayer_button.y + 45))
+				l_quit_button.assigner_ptr_image
+				l_quit_button.apply_element_with_coordinates (a_screen, 200, (l_multiplayer_button.y + 50))
+				if not l_egg_is_hidden then
+					l_egg.apply_element (a_screen)
+				end
+				refresh(a_screen, 12)
 			end
 			quit_game
 		end
 
-	playing(a_screen:POINTER)
+	multiplayer_menu(a_screen:POINTER)
+		local
+			l_event_ptr:POINTER
+			l_exit, l_play_multi, l_egg_is_hidden, l_is_server, l_player_name_not_changed:BOOLEAN
+			l_player_name, l_old_player_name:STRING
+
+			l_menu, l_multiplayer_button, l_quit_button, l_egg:MENU
+			l_database:DATABASE
+			l_score:SCORE
+		do
+			-- Initialisation de l_screen
+			create l_menu.make ("Ressources/Images/menu_screen3.png")
+			create l_multiplayer_button.make ("Ressources/Images/Multiplayer2.png")
+			create l_quit_button.make ("Ressources/Images/Quit2.png")
+			create l_egg.make ("Ressources/Images/yoshi_egg.png")
+			l_egg.change_x(160)
+			create l_score.make(20)
+			l_score.change_color (0, 0, 0)
+			create l_database.make
+
+			l_player_name := "Nom: "
+			l_player_name_not_changed := True
+
+			l_event_ptr := size_of_event_memory_allocation
+			from
+			until
+				l_exit
+			loop
+				l_is_server := False
+				if l_play_multi then
+					if l_player_name.is_equal ("Nom: server") then
+						l_is_server := True
+					end
+					multiplayer (a_screen, l_database, l_is_server)
+					l_play_multi := False
+				end
+				from
+				until
+					{SDL_WRAPPER}.SDL_PollEvent (l_event_ptr) < 1
+				loop
+					l_egg_is_hidden := True
+					l_multiplayer_button.assign_img_path ("Ressources/Images/Multiplayer2.png")
+					l_quit_button.assign_img_path ("Ressources/Images/Quit2.png")
+					if quit_request(l_event_ptr) then
+						l_exit := True
+					elseif over_button(l_event_ptr, l_multiplayer_button) then
+						l_egg.change_y(l_multiplayer_button.y + 5)
+						l_egg_is_hidden := False
+						if click(l_event_ptr) then
+							l_play_multi := True
+						end
+					elseif over_button(l_event_ptr, l_quit_button) then
+						l_egg.change_y (l_quit_button.y + 5)
+						l_egg_is_hidden := False
+						if click(l_event_ptr) then
+							l_exit := True
+						end
+					end
+					l_old_player_name := l_player_name
+					if l_player_name.count < 15 then
+						l_player_name := l_player_name + name_entry_letter (l_event_ptr)
+					end
+					if delete_character(l_event_ptr) then
+						if not l_player_name.is_equal ("Nom: ") then
+							l_player_name := l_player_name.substring (1, (l_player_name.count - 1))
+						end
+					end
+					if not l_player_name.is_equal (l_old_player_name) OR l_player_name_not_changed then
+						l_score.assigner_score (l_player_name)
+						l_player_name_not_changed := False
+					end
+				end
+				l_menu.apply_background (a_screen)
+				l_multiplayer_button.assigner_ptr_image
+				l_multiplayer_button.apply_element_with_coordinates (a_screen, 200, 100)
+				l_quit_button.assigner_ptr_image
+				l_quit_button.apply_element_with_coordinates (a_screen, 200, (l_multiplayer_button.y + 50))
+				if not l_egg_is_hidden then
+					l_egg.apply_element (a_screen)
+				end
+				l_score.apply_text (a_screen, 190, (l_quit_button.y + 50))
+				refresh(a_screen, 12)
+			end
+		end
+
+	singleplayer_menu(a_screen:POINTER)
+		local
+			l_event_ptr:POINTER
+			l_exit, l_play_single, l_egg_is_hidden, l_player_name_not_changed, l_is_server:BOOLEAN
+			l_player_name, l_old_player_name:STRING
+
+			l_menu, l_singleplayer_button, l_quit_button, l_egg:MENU
+			l_database:DATABASE
+			l_score:SCORE
+		do
+			-- Initialisation de l_screen
+			create l_menu.make ("Ressources/Images/menu_screen3.png")
+			create l_singleplayer_button.make ("Ressources/Images/Single_Player2.png")
+			create l_quit_button.make ("Ressources/Images/Quit2.png")
+			create l_egg.make ("Ressources/Images/yoshi_egg.png")
+			l_egg.change_x(160)
+			create l_score.make(20)
+			l_score.change_color (0, 0, 0)
+			create l_database.make
+
+			l_player_name := "Nom: "
+			l_player_name_not_changed := True
+
+			l_event_ptr := size_of_event_memory_allocation
+			from
+			until
+				l_exit
+			loop
+				l_is_server := False
+				if l_play_single then
+					single_player (a_screen, l_database)
+					l_play_single := False
+				end
+				from
+				until
+					{SDL_WRAPPER}.SDL_PollEvent (l_event_ptr) < 1
+				loop
+					l_egg_is_hidden := True
+					l_singleplayer_button.assign_img_path ("Ressources/Images/Single_Player2.png")
+					l_quit_button.assign_img_path ("Ressources/Images/Quit2.png")
+					if quit_request(l_event_ptr) then
+						l_exit := True
+					elseif over_button(l_event_ptr, l_singleplayer_button) then
+						l_egg.change_y(l_singleplayer_button.y + 5)
+						l_egg_is_hidden := False
+						if click(l_event_ptr) then
+							l_play_single := True
+						end
+					elseif over_button(l_event_ptr, l_quit_button) then
+						l_egg.change_y (l_quit_button.y + 5)
+						l_egg_is_hidden := False
+						if click(l_event_ptr) then
+							l_exit := True
+						end
+					end
+					l_old_player_name := l_player_name
+					if l_player_name.count < 15 then
+						l_player_name := l_player_name + name_entry_letter (l_event_ptr)
+					end
+					if delete_character(l_event_ptr) then
+						if not l_player_name.is_equal ("Nom: ") then
+							l_player_name := l_player_name.substring (1, (l_player_name.count - 1))
+						end
+					end
+					if not l_player_name.is_equal (l_old_player_name) OR l_player_name_not_changed then
+						l_score.assigner_score (l_player_name)
+						l_player_name_not_changed := False
+					end
+				end
+				l_menu.apply_background (a_screen)
+				l_singleplayer_button.assigner_ptr_image
+				l_singleplayer_button.apply_element_with_coordinates (a_screen, 200, 100)
+				l_quit_button.assigner_ptr_image
+				l_quit_button.apply_element_with_coordinates (a_screen, 200, (l_singleplayer_button.y + 50))
+				if not l_egg_is_hidden then
+					l_egg.apply_element (a_screen)
+				end
+				l_score.apply_text (a_screen, 190, (l_quit_button.y + 50))
+				refresh(a_screen, 12)
+			end
+		end
+
+	multiplayer(a_screen:POINTER; a_database:DATABASE; a_is_server:BOOLEAN)
 		local
 			l_difficulty:NATURAL_32
-			l_ctr:INTEGER_16
-			--l_player_name:STRING
-			l_ff_box, l_ff_box2, l_player_box:ARRAY[INTEGER]
+			l_ctr, l_player_old_sprite_x:INTEGER_16
+			l_time_game_started, l_time_alive, l_highscore_time, l_last_game_time, l_time_ctr:INTEGER_32
+			l_ff_box, l_ff_box2, l_player_box:ARRAY[INTEGER_32]
 			l_event_ptr:POINTER
-			l_game_over, l_spawning, l_follow_player:BOOLEAN
+			l_game_over, l_spawning:BOOLEAN
 
 			-- Instances de classe
 			l_bg:BACKGROUND
 			l_enemy:ENEMY
 			l_flying_floor, l_ff_two:FLYING_FLOOR
-			l_database:DATABASE
 			l_player:PLAYER
+			l_timer, l_highscore, l_last_game:SCORE
+			l_network_thread:MULTI_THREAD
 		do
-			create l_bg
-			create l_player
-			create l_enemy
-			create l_flying_floor
-			create l_ff_two
-			create l_database
-
-			-- Initialisation du background
-			l_bg.assigner_ptr_image
-			-- Initialisation du player
-			l_player.init_player
-			-- Initialisation de l'ennemy
-			l_enemy.init_enemy
-			-- Initialisation des flying_floors
-			l_flying_floor.init_flying_floor (100, 175)
-			l_ff_two.init_flying_floor (200, 100)
-			-- Spawn
-			l_spawning := true
-			l_follow_player := true
-			l_event_ptr := size_of_event_memory_allocation
-			print ("Veuillez choisir votre niveau de difficulté (Entre 0 et 4) : ")
-			io.read_natural_32
-			l_difficulty := io.last_natural_32
-			if l_difficulty > 0 then
-				print ("Bon jeu!%NAppuyez sur une entrer pour continuer...")
-			elseif l_difficulty = 0 then
-				print ("Ooooh... Bonne chance...%NAppuyez sur une entrer pour continuer...")
+			create l_bg.make
+			create l_player.make
+			create l_enemy.make
+			create l_flying_floor.make (100, 185)
+			create l_ff_two.make (350, 165)
+			create l_timer.make (30)
+			create l_last_game.make (20)
+			create l_highscore.make (20)
+			create l_network_thread.make(a_is_server, l_enemy, l_player)
+			if not a_is_server then
+				l_player_old_sprite_x := l_player.sprite_x
+				l_player.change_sprite_x (l_enemy.sprite_x)
+				l_enemy.change_sprite_x (l_player_old_sprite_x)
 			end
-			io.read_line
+
+			l_time_ctr := 0
+			-- Spawn
+			l_spawning := False
+			l_event_ptr := size_of_event_memory_allocation
+			l_time_game_started := timer
+			l_difficulty := 3
+			l_last_game_time := a_database.get_time_played ("LastGame")
+			l_highscore_time := a_database.get_time_played ("Highscore")
+			l_highscore.assigner_score ("Highscore: " + (l_highscore_time // 100).out + "." + ((l_highscore_time \\ 100) // 10).out + " Seconds")
+			l_last_game.assigner_score ("Last Game: " + (l_last_game_time // 100).out + "." + ((l_last_game_time \\ 100) // 10).out + " Seconds")
+			l_network_thread.launch
 			from
 			until
 				l_game_over
@@ -124,13 +339,16 @@ feature {NONE} -- Main
 				l_player_box := l_player.fill_sprite_box
 				if not l_spawning then
 					l_player.move (l_ff_box, l_ff_box2)
+					l_time_ctr := l_time_ctr + 1
 					l_enemy.init_ff_boxes (l_ff_box, l_ff_box2)
-					l_enemy.random_move (l_follow_player, l_player_box)
-					l_enemy.move
+--					l_player.animate
+					l_enemy.animate
 				end
+				l_time_alive := ((timer - l_time_game_started) // 10)
+				l_timer.assigner_score (((timer - l_time_game_started) // 1000).out + "." + ((((timer - l_time_game_started) \\ 1000) // 100).out) + " Seconds")
 				l_bg.apply_background (a_screen)
 				l_enemy.adjust_lives
-				l_enemy.show_lives (a_screen)
+--				l_enemy.show_lives (a_screen)
 				if l_spawning then
 					l_player.apply_spawn (a_screen)
 					l_enemy.apply_spawn (a_screen)
@@ -140,6 +358,9 @@ feature {NONE} -- Main
 				end
 				l_flying_floor.apply_flying_floor(a_screen)
 				l_ff_two.apply_flying_floor (a_screen)
+				l_timer.apply_text (a_screen, 5, 35)
+				l_highscore.apply_text (a_screen, 5, 5)
+				l_last_game.apply_text (a_screen, 5, 20)
 				refresh (a_screen, l_difficulty)
 				if l_ctr < 74 then
 					l_ctr := l_ctr + 1
@@ -147,28 +368,275 @@ feature {NONE} -- Main
 					l_spawning := false
 				end
 				if l_enemy.no_live then
+					if a_database.player_exist ("Highscore") then
+						if l_time_alive > a_database.get_time_played ("Highscore") then
+							a_database.update_table ("Highscore", 0, l_time_alive)
+						end
+					else
+						a_database.insert_table ("Highscore", l_time_alive)
+					end
+					if a_database.player_exist ("LastGame") then
+						a_database.update_table ("LastGame", 0, l_time_alive)
+					else
+						a_database.insert_table ("LastGame", l_time_alive)
+					end
 					l_game_over := True
 				end
 			end
+			l_network_thread.stop
+			l_network_thread.join
 		end
+
+	single_player(a_screen:POINTER; a_database:DATABASE)
+		local
+			l_difficulty:NATURAL_32
+			l_ctr:INTEGER_16
+			l_time_game_started, l_time_alive, l_highscore_time, l_last_game_time, l_time_ctr:INTEGER_32
+			l_ff_box, l_ff_box2, l_player_box:ARRAY[INTEGER_32]
+			l_event_ptr:POINTER
+			l_game_over, l_spawning:BOOLEAN
+			l_chunk_path, l_c_string:C_STRING
+			l_chunk:POINTER
+
+			-- Instances de classe
+			l_bg:BACKGROUND
+			l_enemy:ENEMY
+			l_flying_floor, l_ff_two:FLYING_FLOOR
+			l_player:PLAYER
+			l_timer, l_highscore, l_last_game:SCORE
+			l_egg_lives:MENU
+		do
+			create l_bg.make
+			create l_player.make
+			create l_enemy.make
+			create l_flying_floor.make (100, 185)
+			create l_ff_two.make (350, 165)
+			create l_timer.make (30)
+			create l_last_game.make (20)
+			create l_highscore.make (20)
+			create l_egg_lives.make ("Ressources/Images/egg_lives.png")
+			-- Spawn
+			l_spawning := False
+
+			l_event_ptr := size_of_event_memory_allocation
+			l_time_game_started := timer
+			l_difficulty := 3
+			l_last_game_time := a_database.get_time_played ("LastGame")
+			l_highscore_time := a_database.get_time_played ("Highscore")
+			l_highscore.assigner_score ("Highscore: " + (l_highscore_time // 100).out + "." + ((l_highscore_time \\ 100) // 10).out + " Seconds")
+			l_last_game.assigner_score ("Last Game: " + (l_last_game_time // 100).out + "." + ((l_last_game_time \\ 100) // 10).out + " Seconds")
+			from
+			until
+				l_game_over
+			loop
+				from
+				until
+					{SDL_WRAPPER}.SDL_PollEvent(l_event_ptr) < 1
+				loop
+					if quit_request(l_event_ptr) then
+						l_game_over := true
+					elseif not l_spawning then
+						ingame_keys(l_player, l_event_ptr)
+					end
+				end
+				l_ff_box := l_flying_floor.ff_box_array
+				l_ff_box2 := l_ff_two.ff_box_array
+				l_player_box := l_player.fill_sprite_box
+				if not l_spawning then
+					l_player.move (l_ff_box, l_ff_box2)
+					l_time_ctr := l_time_ctr + 1
+					l_enemy.init_ff_boxes (l_ff_box, l_ff_box2)
+--					l_player.animate
+--					l_enemy.animate
+					l_enemy.play_tag (l_player_box)
+					l_enemy.move
+				end
+				l_time_alive := ((timer - l_time_game_started) // 10)
+				l_timer.assigner_score (((timer - l_time_game_started) // 1000).out + "." + ((((timer - l_time_game_started) \\ 1000) // 100).out) + " Seconds")
+				l_bg.apply_background (a_screen)
+				l_enemy.adjust_lives
+--				l_enemy.show_lives (a_screen)
+				if l_spawning then
+					l_player.apply_spawn (a_screen)
+					l_enemy.apply_spawn (a_screen)
+				else
+					l_player.apply_player (a_screen)
+					l_enemy.apply_player (a_screen)
+				end
+				l_flying_floor.apply_flying_floor(a_screen)
+				l_ff_two.apply_flying_floor (a_screen)
+				l_timer.apply_text (a_screen, 5, 35)
+				l_highscore.apply_text (a_screen, 5, 5)
+				l_last_game.apply_text (a_screen, 5, 20)
+				show_lives (a_screen, l_enemy, l_egg_lives)
+				refresh (a_screen, l_difficulty)
+				if l_ctr < 74 then
+					l_ctr := l_ctr + 1
+				elseif l_ctr = 74 then
+					l_spawning := false
+				end
+				if l_enemy.no_live then
+					if a_database.player_exist ("Highscore") then
+						if l_time_alive > a_database.get_time_played ("Highscore") then
+							a_database.update_table ("Highscore", 0, l_time_alive)
+						end
+					else
+						a_database.insert_table ("Highscore", l_time_alive)
+					end
+					if a_database.player_exist ("LastGame") then
+						a_database.update_table ("LastGame", 0, l_time_alive)
+					else
+						a_database.insert_table ("LastGame", l_time_alive)
+					end
+					l_game_over := True
+				end
+			end
+			create l_chunk_path.make ("Ressources/Sounds/98874__robinhood76__01850-cartoon-dissapoint.wav")
+			l_chunk := {SDL_WRAPPER}.Mix_LoadWAV(l_chunk_path.item)
+			if {SDL_WRAPPER}.Mix_PlayChannel(-1, l_chunk, 0) < 0 then
+				print("Error PlayChannel")
+			end
+			l_bg.assigner_game_over
+			l_bg.apply_background (a_screen)
+			refresh (a_screen, l_difficulty)
+			{SDL_WRAPPER}.SDL_Delay(6000)
+		end
+
 feature {NONE} -- Menu
 
-	start_game(a_event_ptr:POINTER):BOOLEAN
+	over_button(a_event_ptr:POINTER; a_button:MENU):BOOLEAN
 		local
-			l_event:NATURAL_8
-			l_keyboard_event_ptr, l_keysym, l_sym:POINTER
+			l_mouse_x, l_mouse_y:INTEGER_16
 		do
 			Result := False
+			l_mouse_x := {SDL_WRAPPER}.get_SDL_MouseButtonEvent_x(a_event_ptr)
+			l_mouse_y := {SDL_WRAPPER}.get_SDL_MouseButtonEvent_y(a_event_ptr)
+			if (l_mouse_x >= a_button.x AND l_mouse_x <= (a_button.x + a_button.w)) AND (l_mouse_y >= a_button.y AND l_mouse_y <= (a_button.y + a_button.h)) then
+				Result := True
+			end
+		end
+
+	click(a_event_ptr:POINTER):BOOLEAN
+		local
+			l_event:NATURAL_8
+			l_mouse_button_ptr:NATURAL_8
+		do
+			Result := False
+			l_event := {SDL_WRAPPER}.get_SDL_Event_type(a_event_ptr)
+			if l_event = {SDL_WRAPPER}.SDL_MOUSEBUTTONDOWN then
+				l_mouse_button_ptr := {SDL_WRAPPER}.get_SDL_MouseButtonEvent_button(a_event_ptr)
+				if l_mouse_button_ptr = {SDL_WRAPPER}.SDL_BUTTON_LEFT then
+					Result := True
+				end
+			end
+		end
+
+	delete_character(a_event_ptr:POINTER):BOOLEAN
+		local
+				l_event:NATURAL_8
+				l_keyboard_event_ptr, l_keysym:POINTER
+				l_sym:INTEGER
+			do
+				Result := False
+				l_keyboard_event_ptr := size_of_keysym_memory_allocation
+				l_event := {SDL_WRAPPER}.get_SDL_Event_type(a_event_ptr)
+				if l_event = {SDL_WRAPPER}.SDL_KEYDOWN then
+					l_keyboard_event_ptr := keyboard_event (a_event_ptr)
+					l_keysym := keysym (l_keyboard_event_ptr)
+					l_sym := sym (l_keysym)
+					if l_sym = {SDL_WRAPPER}.SDLK_BACKSPACE then
+						Result := True
+					end
+				end
+			end
+
+	name_entry_letter(a_event_ptr:POINTER):STRING_8
+		local
+			l_event:NATURAL_8
+			l_keyboard_event_ptr, l_keysym:POINTER
+			l_sym:INTEGER
+			l_keyname:C_STRING
+			l_keyname_str:STRING
+		do
+			Result := ""
 			l_keyboard_event_ptr := size_of_keysym_memory_allocation
 			l_event := {SDL_WRAPPER}.get_SDL_Event_type(a_event_ptr)
 			if l_event = {SDL_WRAPPER}.SDL_KEYDOWN then
 				l_keyboard_event_ptr := keyboard_event (a_event_ptr)
 				l_keysym := keysym (l_keyboard_event_ptr)
 				l_sym := sym (l_keysym)
-				if l_sym = {SDL_WRAPPER}.SDLK_RETURN then
-					Result := True
+				create l_keyname.make_by_pointer ({SDL_WRAPPER}.SDL_GetKeyName(l_sym))
+				l_keyname_str := l_keyname.string
+				if l_keyname_str.count = 1 then
+					if (l_keyname_str[1] >= 'a' AND l_keyname_str[1] <= 'z') OR (l_keyname_str[1] >= '0' AND l_keyname_str[1] <= '9') then
+						Result := l_keyname_str
+					end
 				end
 			end
+		end
+
+	start_music
+		do
+--			if {SDL_WRAPPER}.Mix_Init(0) < 0 then
+--				print("Error at sound")
+--			end
+			open_audio
+			load_music
+		end
+
+	close_audio
+		do
+			{SDL_WRAPPER}.Mix_CloseAudio
+		end
+
+	open_audio
+		local
+			l_default_format:NATURAL_16
+		do
+			l_default_format := {SDL_WRAPPER}.MIX_DEFAULT_FORMAT
+			if {SDL_WRAPPER}.Mix_OpenAudio(44100, l_default_format, 2, 4096) < 0 then
+				print("Error OpenAudio")
+			end
+		end
+
+	load_music
+		local
+			l_music_path:C_STRING
+			l_music:POINTER
+		do
+			create l_music_path.make ("Ressources/test.ogg")
+			l_music := {SDL_WRAPPER}.Mix_LoadMUS(l_music_path.item)
+			if {SDL_WRAPPER}.Mix_PlayMusic(l_music, 1) < 0 then
+				print("Error PlayMusic")
+			end
+			{SDL_WRAPPER}.Mix_PauseMusic
+		end
+
+	apply_title
+		local
+			l_title:C_STRING
+		do
+			create l_title.make ("Jumproject")
+			{SDL_WRAPPER}.SDL_WM_SetCaption(l_title.item, create{POINTER})
+		end
+
+	apply_icon
+		local
+			l_icon:C_STRING
+			l_icon_ptr:POINTER
+		do
+			create l_icon.make ("Ressources/Images/icon.png")
+			l_icon_ptr := {SDL_WRAPPER}.SDL_IMG_Load(l_icon.item)
+			{SDL_WRAPPER}.SDL_WM_SetIcon(l_icon_ptr, create{POINTER})
+		end
+
+	show_lives(a_screen:POINTER; a_enemy:ENEMY; a_egg_lives:MENU)
+		local
+			l_score:SCORE
+		do
+			a_egg_lives.apply_element_with_coordinates (a_screen, 450, 5)
+			l_score := a_enemy.score
+			l_score.apply_text (a_screen, a_egg_lives.x + 30 , 5)
 		end
 
 feature {NONE} -- Jeu
@@ -190,7 +658,8 @@ feature {NONE} -- Jeu
 	-- Gestion des touches lors d'une partie
 		local
 			l_event:NATURAL_8
-			l_keyboard_event_ptr, l_keysym, l_sym:POINTER
+			l_keyboard_event_ptr, l_keysym:POINTER
+			l_sym:INTEGER
 		do
 			l_keyboard_event_ptr := size_of_keysym_memory_allocation
 			l_event := {SDL_WRAPPER}.get_SDL_Event_type(a_event_ptr)
@@ -204,12 +673,6 @@ feature {NONE} -- Jeu
 					a_player.set_move_right
 				elseif l_sym = {SDL_WRAPPER}.SDLK_SPACE then
 					a_player.set_jump
---				elseif l_sym = {SDL_WRAPPER}.SDLK_BACKSPACE then
---					if follow_player then
---						follow_player := false
---					else
---						follow_player := true
---					end
 				elseif l_sym = {SDL_WRAPPER}.SDLK_h then
 					print_help
 				end
@@ -245,17 +708,34 @@ feature {NONE} -- Jeu
 			{SDL_WRAPPER}.SDL_Quitter
 		end
 
+	timer:INTEGER
+		do
+			Result := ({SDL_WRAPPER}.get_SDL_ticks).as_integer_32
+		end
 
 feature {NONE} -- Procédures SDL
 
-	init_sdl
-	-- Initialisation de la librairie SDL
+	init_sdl_video
+	-- Initialisation du contenu vidéo de la librairie SDL
 		local
-			l_init:NATURAL_32
+			l_video_init:NATURAL_32
 		do
-			l_init := {SDL_WRAPPER}.SDL_INIT_VIDEO
+			l_video_init := {SDL_WRAPPER}.SDL_INIT_VIDEO
 			if
-				{SDL_WRAPPER}.SDL_Init(l_init) < 0
+				{SDL_WRAPPER}.SDL_Init(l_video_init) < 0
+			then
+				io.put_string ("Erreur lors de l'Initialisation de la librairie SDL. %N(SDL_Init returned -1)")
+			end
+		end
+
+	init_sdl_audio
+	-- Initialisation du contenu audio de la librairie SDL
+		local
+			l_audio_init:NATURAL_32
+		do
+			l_audio_init := {SDL_WRAPPER}.SDL_INIT_AUDIO
+			if
+				{SDL_WRAPPER}.SDL_Init(l_audio_init) < 0
 			then
 				io.put_string ("Erreur lors de l'Initialisation de la librairie SDL. %N(SDL_Init returned -1)")
 			end
@@ -306,7 +786,7 @@ feature {NONE} -- Procédures SDL
 			Result := {SDL_WRAPPER}.set_SDL_keysym_from_KeyboardEvent(a_keyboard_event_ptr)
 		end
 
-	sym(a_keysym:POINTER):POINTER
+	sym(a_keysym:POINTER):INTEGER
 	-- Retourne un pointeur indiquant la touche ayant été appuyé
 		do
 			Result := {SDL_WRAPPER}.get_SDL_sym(a_keysym)

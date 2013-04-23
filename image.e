@@ -56,6 +56,16 @@ feature {SPRITE, GROUND, BACKGROUND}-- Gestion des images
 			l_target_area.memory_free
 		end
 
+	apply_fill(a_screen:POINTER; a_color:NATURAL_32)
+	-- Applique une couleur unie à la fenêtre
+		do
+			if
+				{SDL_WRAPPER}.SDL_FillRect(a_screen, create{POINTER}, a_color) < 0
+			then
+				io.put_string ("Erreur lors de l'application du background. %N(SDL_FillRect returned -1) at apply_img")
+			end
+		end
+
 	get_img_w:INTEGER_16
 	-- Retourne la largeur
 		do

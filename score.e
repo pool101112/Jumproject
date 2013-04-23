@@ -7,12 +7,17 @@ note
 class
 	SCORE
 
+create
+	make
+
 feature -- TTF
 	color, font, text:POINTER
+	size:INTEGER
 
-	init
+	make(a_size:INTEGER)
 		do
 			init_ttf
+			font_size(a_size)
 			create_font
 			change_color(122, 0, 0)
 		end
@@ -24,15 +29,20 @@ feature -- TTF
 			end
 		end
 
+	font_size(a_size:INTEGER)
+		do
+			size := a_size
+		end
+
 	create_font
 		local
 			l_c_font:C_STRING
 		do
-			create l_c_font.make("Ressources/foughtknight.ttf")
-			font := {SDL_WRAPPER}.TTF_OpenFont(l_c_font.item, 20)
+			create l_c_font.make("Ressources/visitor1.ttf")
+			font := {SDL_WRAPPER}.TTF_OpenFont(l_c_font.item, size)
 		end
 
-	change_color(a_r, a_g, a_b:INTEGER_8)
+	change_color(a_r, a_g, a_b:NATURAL_8)
 		local
 			l_memory_manager:POINTER
 		do
@@ -64,10 +74,30 @@ feature -- TTF
 			if
 				{SDL_WRAPPER}.SDL_BlitSurface(text, create{POINTER}, a_screen, l_target_area) < 0
 			then
-				io.put_string ("Erreur lors de l'application du background. %N(SDL_BlitSurface returned -1) at apply_img")
+				io.put_string ("Erreur lors de l'application du TTF. %N(SDL_BlitSurface returned -1) at apply_img")
 			end
 
 			l_target_area.memory_free
+		end
+
+	apply_text(a_screen:POINTER; a_x, a_y:INTEGER_16)
+		local
+			l_target_area, l_memory_manager:POINTER
+		do
+			l_target_area := l_memory_manager.memory_alloc({SDL_WRAPPER}.sizeof_SDL_Rect)
+
+			{SDL_WRAPPER}.set_target_area_x(l_target_area, a_x)
+			{SDL_WRAPPER}.set_target_area_y(l_target_area, a_y)
+			{SDL_WRAPPER}.set_target_area_w(l_target_area, 100)
+			{SDL_WRAPPER}.set_target_area_h(l_target_area, 100)
+
+			if
+				{SDL_WRAPPER}.SDL_BlitSurface(text, create{POINTER}, a_screen, l_target_area) < 0
+			then
+				io.put_string ("Erreur lors de l'application du TTF. %N(SDL_BlitSurface returned -1) at apply_img")
+			end
+			l_target_area.memory_free
+			l_memory_manager.memory_free
 		end
 
 end
