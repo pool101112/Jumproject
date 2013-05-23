@@ -4,32 +4,21 @@ note
 	date: "21 Février 2013"
 	revision: ""
 
-class
+deferred class
 	COLLISION
 
 feature {GAME, SPRITE} -- Collision
-	box1_left, box1_right, box1_bottom, box1_top, box2_left, box2_right, box2_bottom, box2_top:INTEGER
 
-	is_collision(box1, box2:ARRAY[INTEGER]):BOOLEAN
+	is_collision (a_object, a_object_2:TUPLE[left, right, top, bottom:INTEGER_16]):BOOLEAN
 	-- Vérifie si une collision survient entre 2 objets
 		do
-			box1_left := box1[1]
-			box1_right := box1[1] + box1[3]
-			box1_bottom := box1[2] + box1[4]
-			box1_top := box1[2]
-
-			box2_left := box2[1]
-			box2_right := box2[1] + box2[3]
-			box2_bottom := box2[2] + box2[4]
-			box2_top := box2[2]
-
-			if box1_right < box2_left then
+			if a_object.right < a_object_2.left then
 				Result := false
-			elseif box1_left > box2_right then
+			elseif a_object.left > a_object_2.right then
 				Result := false
-			elseif box1_bottom < box2_top then
+			elseif a_object.bottom < a_object_2.top then
 				Result := false
-			elseif box1_top > box2_bottom then
+			elseif a_object.top > a_object_2.bottom then
 				Result := false
 			else
 				Result := true

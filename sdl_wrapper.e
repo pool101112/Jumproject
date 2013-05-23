@@ -665,7 +665,7 @@ feature {SCORE} -- TTF
 			"TTF_OpenFont"
 		end
 
-feature {GAME, ENEMY} -- Sounds
+feature {GAME, ENEMY, SOUND} -- Sounds
 
 	frozen Mix_Init(flags:INTEGER):INTEGER
 		external
@@ -724,6 +724,13 @@ feature {GAME, ENEMY} -- Sounds
 			"Mix_PlayMusic((Mix_Music *)$music, (int)$loops)"
 		end
 
+	frozen Mix_PlayingMusic:INTEGER
+		external
+			"C:int | <SDL_mixer.h>"
+		alias
+			"Mix_PlayingMusic"
+		end
+
 	frozen Mix_FadeInMusic(music:POINTER; loops, ms:INTEGER):INTEGER
 		external
 			"C inline use <SDL_mixer.h>"
@@ -733,14 +740,14 @@ feature {GAME, ENEMY} -- Sounds
 
 	 frozen Mix_HaltMusic
 	 	external
-	 		"C inline use <SDL_mixer.h>"
+	 		"C | <SDL_mixer.h>"
 	 	alias
 	 		"Mix_HaltMusic"
 	 	end
 
 	 frozen Mix_PauseMusic
 	 	external
-	 		"C inline use <SDL_mixer.h>"
+	 		"C | <SDL_mixer.h>"
 	 	alias
 	 		"Mix_PauseMusic"
 	 	end
@@ -754,7 +761,7 @@ feature {GAME, ENEMY} -- Sounds
 
 	 frozen Mix_ResumeMusic
 	 	external
-	 		"C inline use <SDL_mixer.h>"
+	 		"C | <SDL_mixer.h>"
 	 	alias
 	 		"Mix_ResumeMusic"
 	 	end

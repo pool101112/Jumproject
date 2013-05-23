@@ -16,14 +16,28 @@ create
 feature -- Images
 
 
-	make
+	make(a_player_number:INTEGER_8; a_screen:POINTER; a_ff_object, a_ff_object_2:FLYING_FLOOR)
 	-- Initialisation du sprite
 		do
+			screen := a_screen
 			animation_files_path
-			assigner_ptr_image
-			set_start(556, 279)
+			create_img_ptr_list
+			create_img_ptr_new(go_left_path)
+			create_img_ptr_new(go_right_path)
+			create_img_ptr_new(wait_left_path)
+			create_img_ptr_new(wait_right_path)
+			create_img_ptr_new(jump_left_path)
+			create_img_ptr_new(jump_right_path)
+			assigner_img_ptr_from_array (1)
+			if (a_player_number = 0) then
+				set_start(556, 279)
+			else
+				set_start(1000, 279)
+			end
 			set_velocity(4, 3)
-			assigner_spawn
+			init_score
+			init_flying_floors (a_ff_object, a_ff_object_2)
+			--assigner_spawn
 		end
 
 	animation_files_path
@@ -38,144 +52,89 @@ feature -- Images
 			jump_right_path := "Ressources/yoma_jump_right.png"
 		end
 
-	animate
-		do
-			if old_sprite_x < sprite_x then
-				looking_right := True
-				if old_sprite_y /= sprite_y then
-					assigner_sprite (jump_right_path)
-				elseif old_sprite_y = sprite_y then
-					assigner_sprite (go_right_path)
-				end
-			elseif old_sprite_x > sprite_x then
-				looking_right := False
-				if old_sprite_y /= sprite_y then
-					assigner_sprite (jump_left_path)
-				elseif old_sprite_y = sprite_y then
-					assigner_sprite (go_left_path)
-				end
-			else
-				if looking_right then
-					assigner_sprite (wait_right_path)
-				else
-					assigner_sprite (wait_left_path)
-				end
-			end
-		end
-
 	assigner_ptr_image
 	-- Assigne l'image
 		do
-			assigner_sprite(wait_right_path)
+			create_img_ptr_new("Ressources/yoma_spawn_left.png")
 		end
 
-	assigner_spawn
-	-- Assigne l'image de spawn
+	assign_ptr
 		do
-			assigner_sprite(spawn_left_path)
+			img_ptr := img_ptr_list[1]
 		end
 
-	apply_player(a_screen:POINTER)
+--	assigner_spawn
+--	-- Assigne l'image de spawn
+--		do
+--			assigner_sprite(spawn_left_path)
+--		end
+
+	apply_player
 	-- Applique l'image à la fenêtre
-		require
-			a_screen_is_not_null : not a_screen.is_default_pointer
 		do
-			apply_sprite_image_x_y(a_screen, 25)
+			apply_sprite_image_x_y(screen, 25)
 		end
 
-	apply_spawn(a_screen:POINTER)
+	apply_spawn
 	-- Applique l'image de spawn à la fenêtre
-		require
-			a_screen_is_not_null : not a_screen.is_default_pointer
 		do
-			apply_sprite_image_x_y(a_screen, 75)
+			apply_sprite_image_x_y(screen, 75)
 		end
 
 feature -- Moves
 
-	set_velocity(a_x, a_y:INTEGER_16)
-	-- Applique la vélocité de X et Y
-		require
-			a_x_is_above_0 : a_x > 0
-			a_y_is_above_1 : a_y > 0
+	player_box:TUPLE[INTEGER_16, INTEGER_16, INTEGER_16, INTEGER_16]
 		do
-			set_x_vel(a_x)
-			set_y_vel(a_y)
+			Result := [image_x, image_x + image_w // 8, image_y, image_y + image_h]
 		end
 
-	set_move_left
-	-- Indication de bouger vers la gauche
+feature {ANY} -- Actions
+	projectile:PROJECTILE
+	shooting:BOOLEAN
+
+	shoot
 		do
-			if is_moving_right = true then
-				is_moving_right := false
-			end
-			looking_right := false
-			is_moving_left := true
-			if not is_in_air then
-				assigner_sprite(go_left_path)
-			end
+			create projectile.make (looking_right, current)
+			shooting := true
 		end
 
-	set_move_right
-	-- Indication de bouger vers la droite
+	apply_proj (a_enemy:ENEMY)
 		do
-			if is_moving_left = true then
-				is_moving_left := false
-			end
-			looking_right := true
-			is_moving_right := true
-			if not is_in_air then
-				assigner_sprite(go_right_path)
+			if projectile.shooting then
+				projectile.change_image_x (projectile.image_x + projectile.x_vel)
+				projectile.apply_proj (a_enemy)
+			else
+				shooting := false
 			end
 		end
 
-	set_stop_left
-	-- Indication d'arrêter de bouger vers la gauche
+feature {ANY} -- Lives
+	lives:INTEGER_8
+	score:SCORE
+
+	init_score
 		do
-			is_moving_left := false
-			if not is_in_air and not is_moving_right then
-				assigner_sprite(wait_left_path)
+			create score.make (25)
+			lives := 10
+		end
+
+	remaining_lives (a_lives:INTEGER_8)
+		do
+			lives := a_lives
+		end
+
+	adjust_lives
+		do
+				score.assigner_score ("x"+lives.out)
+		end
+
+	no_live:BOOLEAN
+		do
+			if lives < 1 then
+				Result := True
+			else
+				Result := False
 			end
 		end
 
-	set_stop_right
-	-- Indication d'arrêter de bouger vers la droite
-		do
-			is_moving_right := false
-			if not is_in_air and not is_moving_left then
-				assigner_sprite(wait_right_path)
-			end
-		end
-
-	set_jump
-	-- Indication de sauter
-		do
-			if not is_in_air then
-				is_jumping := true
-			end
-		end
-
-	move(a_object_box, a_object_box2:ARRAY[INTEGER])
-	-- Effectue les mouvements et vérifie les collisions
-		require
-			a_object_box_is_not_empty : not a_object_box.is_empty
-			a_object_box2_is_not_empty : not a_object_box2.is_empty
-		do
-			if is_moving_left then
-				move_left(a_object_box, a_object_box2)
-			elseif is_moving_right then
-				move_right(a_object_box, a_object_box2)
-			end
-			if is_jumping then
-				jump(a_object_box, a_object_box2)
-			end
-			if is_in_air then
-				if looking_right then
-					assigner_sprite(jump_right_path)
-				else
-					assigner_sprite(jump_left_path)
-				end
-			end
-			gravity(a_object_box, a_object_box2)
-		end
 end

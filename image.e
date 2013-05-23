@@ -16,11 +16,13 @@ feature {NONE} -- Assignation Pointeur
 		deferred
 		end
 
-feature {SPRITE, GROUND, BACKGROUND}-- Gestion des images
+feature {SPRITE, BACKGROUND} -- Gestion des images
 
 	-- Variables de classe --
 	img_ptr, screen, memory_manager:POINTER
-	image_w, image_h:INTEGER
+	img_ptr_list:LIST[POINTER]
+	image_x, image_y, image_w, image_h, old_image_x, old_image_y:INTEGER_16
+	img_array_pos:INTEGER_8
 	-------------------------
 
 	create_img_ptr(a_image_file:STRING)
@@ -32,18 +34,36 @@ feature {SPRITE, GROUND, BACKGROUND}-- Gestion des images
 			img_ptr := {SDL_WRAPPER}.SDL_IMG_Load(l_c_img.item)
 		end
 
-	apply_img(a_screen, a_image_rect:POINTER; image_x, image_y:INTEGER_16)
+	create_img_ptr_list
+		do
+			create {ARRAYED_LIST[POINTER]} img_ptr_list.make(6)
+		end
+
+	create_img_ptr_new(a_image_file:STRING)
+		local
+			l_c_img:C_STRING
+		do
+			create l_c_img.make (a_image_file)
+			img_ptr_list.extend ({SDL_WRAPPER}.SDL_IMG_Load(l_c_img.item))
+		end
+
+	assigner_img_ptr_from_array(a_pos:INTEGER)
+		do
+			img_ptr := img_ptr_list[a_pos];
+		end
+
+	apply_img(a_screen, a_image_rect:POINTER; a_image_x, a_image_y:INTEGER_16)
 	-- Applique l'image à la fenêtre
 		local
 			l_target_area:POINTER
 		do
 			l_target_area := memory_manager.memory_alloc({SDL_WRAPPER}.sizeof_SDL_Rect)
 
-			image_w := {SDL_WRAPPER}.get_bmp_w(img_ptr)
-			image_h := {SDL_WRAPPER}.get_bmp_h(img_ptr)
+			image_w := get_img_w
+			image_h := get_img_h
 
-			{SDL_WRAPPER}.set_target_area_x(l_target_area, image_x)
-			{SDL_WRAPPER}.set_target_area_y(l_target_area, image_y)
+			{SDL_WRAPPER}.set_target_area_x(l_target_area, a_image_x)
+			{SDL_WRAPPER}.set_target_area_y(l_target_area, a_image_y)
 			{SDL_WRAPPER}.set_target_area_w(l_target_area, image_w)
 			{SDL_WRAPPER}.set_target_area_h(l_target_area, image_h)
 

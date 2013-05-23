@@ -43,17 +43,44 @@ feature {NONE} -- Main
 		local
 			l_event_ptr:POINTER
 			l_exit, l_go_singleplayer_menu, l_go_multiplayer_menu, l_egg_is_hidden:BOOLEAN
+			l_easter_egg_parts_discovered, l_easter_ctr:INTEGER_8
+			l_easter_part_1_activated, l_easter_part_2_activated, l_easter_part_3_activated:BOOLEAN
+			l_string_list:LIST[STRING_8]
 
-			l_menu, l_singleplayer_button, l_multiplayer_button, l_quit_button, l_egg:MENU
+			l_menu, l_singleplayer_button, l_multiplayer_button, l_quit_button, l_egg, l_y_part, l_title_egg, l_i_dot:MENU
+			l_egg_crack:SOUND
 		do
 			-- Initialisation de l_screen
-			create l_menu.make ("Ressources/Images/menu_screen3.png")
+			create l_menu.make ("Ressources/Images/menu_screen4.png")
 			create l_singleplayer_button.make ("Ressources/Images/Single_Player2.png")
 			create l_multiplayer_button.make ("Ressources/Images/Multiplayer2.png")
 			create l_quit_button.make ("Ressources/Images/Quit2.png")
 			create l_egg.make ("Ressources/Images/yoshi_egg.png")
+			create l_title_egg.make ("Ressources/Images/menu_egg_1.png")
+			create {ARRAYED_LIST[STRING]} l_string_list.make (25)
+			create l_egg_crack.make ("Ressources/Sounds/egg_crack_1.wav")
+			l_string_list.extend ("Ressources/Images/menu_egg_f_1.png")
+			l_string_list.extend ("Ressources/Images/menu_egg_f_2.png")
+			l_string_list.extend ("Ressources/Images/menu_egg_f_3.png")
+			l_title_egg.add_img (l_string_list)
+			l_string_list.wipe_out
+			create l_y_part.make ("Ressources/Images/y_part_1.png")
+			l_y_part.change_x (246)
+			l_y_part.change_y (18)
+			l_string_list.extend ("Ressources/Images/y_part_f_1.png")
+			l_string_list.extend ("Ressources/Images/y_part_f_2.png")
+			l_string_list.extend ("Ressources/Images/y_part_f_3.png")
+			l_string_list.extend ("Ressources/Images/y_part_f_4.png")
+			l_y_part.add_img (l_string_list)
+			l_string_list.wipe_out
+			create l_i_dot.make ("Ressources/Images/i_dot_1.png")
 			l_egg.change_x(160)
 			l_event_ptr := size_of_event_memory_allocation
+			l_easter_part_1_activated := false
+			l_easter_part_2_activated := false
+			l_easter_part_3_activated := false
+			l_easter_egg_parts_discovered := 0
+
 			from
 			until
 				l_exit
@@ -70,8 +97,6 @@ feature {NONE} -- Main
 					{SDL_WRAPPER}.SDL_PollEvent (l_event_ptr) < 1
 				loop
 					l_egg_is_hidden := True
-					l_singleplayer_button.assign_img_path ("Ressources/Images/Single_Player2.png")
-					l_quit_button.assign_img_path ("Ressources/Images/Quit2.png")
 					if quit_request(l_event_ptr) then
 						l_exit := True
 					elseif over_button(l_event_ptr, l_singleplayer_button) then
@@ -79,7 +104,6 @@ feature {NONE} -- Main
 						l_egg_is_hidden := False
 						if click(l_event_ptr) then
 							l_go_singleplayer_menu := True
-							{SDL_WRAPPER}.Mix_HaltMusic
 						end
 					elseif over_button(l_event_ptr, l_multiplayer_button) then
 						l_egg.change_y(l_multiplayer_button.y + 5)
@@ -93,14 +117,32 @@ feature {NONE} -- Main
 						if click(l_event_ptr) then
 							l_exit := True
 						end
+					elseif over_button(l_event_ptr, l_y_part) AND not l_easter_part_1_activated then
+						if click(l_event_ptr) then
+							l_easter_part_1_activated := true
+							l_easter_ctr := 0
+						end
+					end
+				end
+
+				if l_easter_part_1_activated then
+					if l_easter_ctr <= 3 then
+						l_y_part.assign_ptr (l_easter_ctr + 2)
+						l_y_part.change_y (l_y_part.y - 2)
+						if l_easter_ctr = 3 then
+							l_y_part.change_x (l_y_part.x - 3)
+							l_title_egg.assign_ptr (2)
+							l_egg_crack.play_sound
+						end
+						l_easter_ctr := l_easter_ctr + 1
 					end
 				end
 				l_menu.apply_background (a_screen)
-				l_singleplayer_button.assigner_ptr_image
+				l_y_part.apply_element_with_coordinates (a_screen, l_y_part.x, l_y_part.y)
+				l_title_egg.apply_element_with_coordinates (a_screen, 248, 34)
+				l_i_dot.apply_element_with_coordinates (a_screen, 301, 23)
 				l_singleplayer_button.apply_element_with_coordinates (a_screen, 200, 100)
-				l_multiplayer_button.assigner_ptr_image
 				l_multiplayer_button.apply_element_with_coordinates (a_screen, 200, (l_singleplayer_button.y + 45))
-				l_quit_button.assigner_ptr_image
 				l_quit_button.apply_element_with_coordinates (a_screen, 200, (l_multiplayer_button.y + 50))
 				if not l_egg_is_hidden then
 					l_egg.apply_element (a_screen)
@@ -110,109 +152,27 @@ feature {NONE} -- Main
 			quit_game
 		end
 
-	multiplayer_menu(a_screen:POINTER)
-		local
-			l_event_ptr:POINTER
-			l_exit, l_play_multi, l_egg_is_hidden, l_is_server, l_player_name_not_changed:BOOLEAN
-			l_player_name, l_old_player_name:STRING
-
-			l_menu, l_multiplayer_button, l_quit_button, l_egg:MENU
-			l_database:DATABASE
-			l_score:SCORE
-		do
-			-- Initialisation de l_screen
-			create l_menu.make ("Ressources/Images/menu_screen3.png")
-			create l_multiplayer_button.make ("Ressources/Images/Multiplayer2.png")
-			create l_quit_button.make ("Ressources/Images/Quit2.png")
-			create l_egg.make ("Ressources/Images/yoshi_egg.png")
-			l_egg.change_x(160)
-			create l_score.make(20)
-			l_score.change_color (0, 0, 0)
-			create l_database.make
-
-			l_player_name := "Nom: "
-			l_player_name_not_changed := True
-
-			l_event_ptr := size_of_event_memory_allocation
-			from
-			until
-				l_exit
-			loop
-				l_is_server := False
-				if l_play_multi then
-					if l_player_name.is_equal ("Nom: server") then
-						l_is_server := True
-					end
-					multiplayer (a_screen, l_database, l_is_server)
-					l_play_multi := False
-				end
-				from
-				until
-					{SDL_WRAPPER}.SDL_PollEvent (l_event_ptr) < 1
-				loop
-					l_egg_is_hidden := True
-					l_multiplayer_button.assign_img_path ("Ressources/Images/Multiplayer2.png")
-					l_quit_button.assign_img_path ("Ressources/Images/Quit2.png")
-					if quit_request(l_event_ptr) then
-						l_exit := True
-					elseif over_button(l_event_ptr, l_multiplayer_button) then
-						l_egg.change_y(l_multiplayer_button.y + 5)
-						l_egg_is_hidden := False
-						if click(l_event_ptr) then
-							l_play_multi := True
-						end
-					elseif over_button(l_event_ptr, l_quit_button) then
-						l_egg.change_y (l_quit_button.y + 5)
-						l_egg_is_hidden := False
-						if click(l_event_ptr) then
-							l_exit := True
-						end
-					end
-					l_old_player_name := l_player_name
-					if l_player_name.count < 15 then
-						l_player_name := l_player_name + name_entry_letter (l_event_ptr)
-					end
-					if delete_character(l_event_ptr) then
-						if not l_player_name.is_equal ("Nom: ") then
-							l_player_name := l_player_name.substring (1, (l_player_name.count - 1))
-						end
-					end
-					if not l_player_name.is_equal (l_old_player_name) OR l_player_name_not_changed then
-						l_score.assigner_score (l_player_name)
-						l_player_name_not_changed := False
-					end
-				end
-				l_menu.apply_background (a_screen)
-				l_multiplayer_button.assigner_ptr_image
-				l_multiplayer_button.apply_element_with_coordinates (a_screen, 200, 100)
-				l_quit_button.assigner_ptr_image
-				l_quit_button.apply_element_with_coordinates (a_screen, 200, (l_multiplayer_button.y + 50))
-				if not l_egg_is_hidden then
-					l_egg.apply_element (a_screen)
-				end
-				l_score.apply_text (a_screen, 190, (l_quit_button.y + 50))
-				refresh(a_screen, 12)
-			end
-		end
-
 	singleplayer_menu(a_screen:POINTER)
 		local
 			l_event_ptr:POINTER
 			l_exit, l_play_single, l_egg_is_hidden, l_player_name_not_changed, l_is_server:BOOLEAN
 			l_player_name, l_old_player_name:STRING
 
-			l_menu, l_singleplayer_button, l_quit_button, l_egg:MENU
+			l_menu, l_start_button, l_back_button, l_egg:MENU
 			l_database:DATABASE
-			l_score:SCORE
+			l_player_name_entry:SCORE
 		do
 			-- Initialisation de l_screen
 			create l_menu.make ("Ressources/Images/menu_screen3.png")
-			create l_singleplayer_button.make ("Ressources/Images/Single_Player2.png")
-			create l_quit_button.make ("Ressources/Images/Quit2.png")
+			create l_start_button.make ("Ressources/Images/Start2.png")
+			create l_back_button.make ("Ressources/Images/Back2.png")
 			create l_egg.make ("Ressources/Images/yoshi_egg.png")
 			l_egg.change_x(160)
-			create l_score.make(20)
-			l_score.change_color (0, 0, 0)
+			create l_player_name_entry.make(20)
+			-- Mettre dans make !
+			l_player_name := "Nom: "
+			l_player_name_entry.assigner_score (l_player_name)
+			l_player_name_entry.change_color (0, 175, 175)
 			create l_database.make
 
 			l_player_name := "Nom: "
@@ -233,18 +193,16 @@ feature {NONE} -- Main
 					{SDL_WRAPPER}.SDL_PollEvent (l_event_ptr) < 1
 				loop
 					l_egg_is_hidden := True
-					l_singleplayer_button.assign_img_path ("Ressources/Images/Single_Player2.png")
-					l_quit_button.assign_img_path ("Ressources/Images/Quit2.png")
 					if quit_request(l_event_ptr) then
 						l_exit := True
-					elseif over_button(l_event_ptr, l_singleplayer_button) then
-						l_egg.change_y(l_singleplayer_button.y + 5)
+					elseif over_button(l_event_ptr, l_start_button) then
+						l_egg.change_y(l_start_button.y + 5)
 						l_egg_is_hidden := False
 						if click(l_event_ptr) then
 							l_play_single := True
 						end
-					elseif over_button(l_event_ptr, l_quit_button) then
-						l_egg.change_y (l_quit_button.y + 5)
+					elseif over_button(l_event_ptr, l_back_button) then
+						l_egg.change_y (l_back_button.y + 5)
 						l_egg_is_hidden := False
 						if click(l_event_ptr) then
 							l_exit := True
@@ -260,29 +218,240 @@ feature {NONE} -- Main
 						end
 					end
 					if not l_player_name.is_equal (l_old_player_name) OR l_player_name_not_changed then
-						l_score.assigner_score (l_player_name)
+						l_player_name_entry.assigner_score (l_player_name)
 						l_player_name_not_changed := False
 					end
 				end
 				l_menu.apply_background (a_screen)
-				l_singleplayer_button.assigner_ptr_image
-				l_singleplayer_button.apply_element_with_coordinates (a_screen, 200, 100)
-				l_quit_button.assigner_ptr_image
-				l_quit_button.apply_element_with_coordinates (a_screen, 200, (l_singleplayer_button.y + 50))
+				l_start_button.apply_element_with_coordinates (a_screen, 200, 100)
+				l_back_button.apply_element_with_coordinates (a_screen, 200, (l_start_button.y + 50))
 				if not l_egg_is_hidden then
 					l_egg.apply_element (a_screen)
 				end
-				l_score.apply_text (a_screen, 190, (l_quit_button.y + 50))
+				l_player_name_entry.apply_text (a_screen, 190, (l_back_button.y + 50))
 				refresh(a_screen, 12)
+			end
+		end
+
+	multiplayer_menu(a_screen:POINTER)
+		local
+			l_event_ptr:POINTER
+			l_exit, l_play_multi, l_egg_is_hidden, l_is_server, l_player_name_not_changed:BOOLEAN
+			l_player_name, l_old_player_name:STRING
+
+			l_menu, l_host_button, l_connect_button, l_back_button, l_egg:MENU
+			l_database:DATABASE
+			l_player_name_entry:SCORE
+		do
+			-- Initialisation de l_screen
+			create l_menu.make ("Ressources/Images/menu_screen3.png")
+			create l_host_button.make ("Ressources/Images/Host2.png")
+			create l_connect_button.make ("Ressources/Images/Connect2.png")
+			create l_back_button.make ("Ressources/Images/Back2.png")
+			create l_egg.make ("Ressources/Images/yoshi_egg.png")
+			l_egg.change_x(160)
+			create l_player_name_entry.make(20)
+			l_player_name := "Nom: "
+			l_player_name_entry.change_color (0, 175, 175)
+			l_player_name_entry.assigner_score (l_player_name)
+			create l_database.make
+
+			l_player_name_not_changed := True
+
+			l_event_ptr := size_of_event_memory_allocation
+			from
+			until
+				l_exit
+			loop
+				l_is_server := False
+				if l_play_multi then
+					if l_player_name.is_equal ("Nom: server") then
+						l_is_server := True
+					end
+					multiplayer (a_screen, l_database, l_is_server)
+					l_play_multi := False
+				end
+				from
+				until
+					{SDL_WRAPPER}.SDL_PollEvent (l_event_ptr) < 1
+				loop
+					l_egg_is_hidden := True
+					if quit_request(l_event_ptr) then
+						l_exit := True
+					elseif over_button(l_event_ptr, l_connect_button) then
+						l_egg.change_y(l_connect_button.y + 5)
+						l_egg_is_hidden := False
+						if click(l_event_ptr) then
+							l_play_multi := True
+						end
+					elseif over_button(l_event_ptr, l_host_button) then
+						l_egg.change_y(l_host_button.y + 5)
+						l_egg_is_hidden := False
+						if click(l_event_ptr) then
+							l_play_multi := True
+						end
+					elseif over_button(l_event_ptr, l_back_button) then
+						l_egg.change_y (l_back_button.y + 5)
+						l_egg_is_hidden := False
+						if click(l_event_ptr) then
+							l_exit := True
+						end
+					end
+					l_old_player_name := l_player_name
+					if l_player_name.count < 15 then
+						l_player_name := l_player_name + name_entry_letter (l_event_ptr)
+					end
+					if delete_character(l_event_ptr) then
+						if not l_player_name.is_equal ("Nom: ") then
+							l_player_name := l_player_name.substring (1, (l_player_name.count - 1))
+						end
+					end
+					if not l_player_name.is_equal (l_old_player_name) OR l_player_name_not_changed then
+						l_player_name_entry.assigner_score (l_player_name)
+						l_player_name_not_changed := False
+					end
+				end
+				l_menu.apply_background (a_screen)
+				l_host_button.apply_element_with_coordinates (a_screen, 75, 100)
+				l_connect_button.apply_element_with_coordinates (a_screen, 250, (l_host_button.y + 50))
+				l_back_button.apply_element_with_coordinates (a_screen, 200, (l_connect_button.y + 50))
+				if not l_egg_is_hidden then
+					l_egg.apply_element (a_screen)
+				end
+				l_player_name_entry.apply_text (a_screen, 190, (l_back_button.y + 50))
+				refresh(a_screen, 12)
+			end
+		end
+
+	single_player(a_screen:POINTER; a_database:DATABASE)
+		local
+			l_difficulty:NATURAL_32
+			l_ctr:INTEGER_16
+			l_time_game_started, l_time_alive, l_time_ctr, l_game_over_time:INTEGER_32
+			l_event_ptr:POINTER
+			l_game_over, l_spawning, l_quit:BOOLEAN
+
+			-- Instances de classe
+			l_bg:BACKGROUND
+			l_enemy:ENEMY
+			l_flying_floor, l_ff_two:FLYING_FLOOR
+			l_player:PLAYER
+			l_timer, l_boss_life:SCORE
+			l_egg_lives, l_enemy_health_bar:MENU
+			l_artificial_intelligence_thread:AI_THREAD
+			l_game_over_sound:SOUND
+		do
+			create l_bg.make
+			create l_flying_floor.make (100, 185)
+			create l_ff_two.make (350, 165)
+			create l_player.make(0, a_screen, l_flying_floor, l_ff_two)
+			create l_enemy.make (a_screen, l_flying_floor, l_ff_two)
+			create l_artificial_intelligence_thread.make (l_player, l_enemy, l_flying_floor, l_ff_two)
+			create l_timer.make (20)
+			create l_boss_life.make (25)
+			create l_egg_lives.make ("Ressources/Images/egg_lives.png")
+			create l_enemy_health_bar.make ("Ressources/Images/health_bar.png")
+			create l_game_over_sound.make ("Ressources/Sounds/98874__robinhood76__01850-cartoon-dissapoint.wav")
+			-- Spawn
+			l_spawning := False
+
+			l_event_ptr := size_of_event_memory_allocation
+			l_time_game_started := timer
+			l_difficulty := 3
+			l_boss_life.assigner_score ("Boss Life : ")
+			l_artificial_intelligence_thread.launch
+			from
+			until
+				l_game_over OR l_quit
+			loop
+				from
+				until
+					{SDL_WRAPPER}.SDL_PollEvent(l_event_ptr) < 1
+				loop
+					if quit_request(l_event_ptr) then
+						l_quit := true
+					elseif not l_spawning then
+						ingame_keys(l_player, l_event_ptr)
+					end
+				end
+				l_time_alive := ((timer - l_time_game_started) // 10)
+				l_timer.assigner_score (((timer - l_time_game_started) // 1000).out + "." + ((((timer - l_time_game_started) \\ 1000) // 100).out) + " Seconds")
+				l_bg.apply_background (a_screen)
+				l_player.adjust_lives
+--				l_enemy.show_lives (a_screen)
+				if l_spawning then
+					l_player.apply_spawn
+					l_enemy.apply_spawn
+				else
+					l_time_ctr := l_time_ctr + 1
+					l_player.move
+					l_player.animate
+					if not l_enemy.is_dead then
+						l_enemy.move
+						l_enemy.animate
+						l_enemy.apply_player
+					end
+					l_player.apply_player
+				end
+				l_flying_floor.apply_flying_floor(a_screen)
+				l_ff_two.apply_flying_floor (a_screen)
+				if l_player.shooting then
+					l_player.apply_proj (l_enemy)
+				end
+				l_timer.apply_text (a_screen, 5, 35)
+				l_boss_life.apply_text (a_screen, 5, 5)
+				show_lives (a_screen, l_player, l_egg_lives)
+				show_boss_health (a_screen, l_enemy, l_enemy_health_bar)
+				refresh (a_screen, l_difficulty)
+				if l_ctr < 74 then
+					l_ctr := l_ctr + 1
+				elseif l_ctr = 74 then
+					l_spawning := false
+				end
+				if l_player.no_live then
+					l_artificial_intelligence_thread.stop
+					l_artificial_intelligence_thread.join
+					if a_database.player_exist ("Highscore") then
+						if l_time_alive > a_database.get_time_played ("Highscore") then
+							a_database.update_table ("Highscore", 0, l_time_alive)
+						end
+					else
+						a_database.insert_table ("Highscore", l_time_alive)
+					end
+					l_game_over := True
+				end
+			end
+			if l_game_over then
+				{SDL_WRAPPER}.Mix_PauseMusic
+				l_game_over_sound.play_sound
+				l_bg.assigner_game_over
+				l_bg.apply_background (a_screen)
+				refresh (a_screen, l_difficulty)
+				l_game_over_time := timer
+				from
+				until
+					timer - l_game_over_time > 5000 OR l_quit
+				loop
+					from
+					until
+						{SDL_WRAPPER}.SDL_PollEvent(l_event_ptr) < 1
+					loop
+						if quit_request(l_event_ptr) then
+							l_quit := true
+						end
+					end
+				end
+				-- {SDL_WRAPPER}.Mix_StopChannel()
+
+				{SDL_WRAPPER}.Mix_ResumeMusic
 			end
 		end
 
 	multiplayer(a_screen:POINTER; a_database:DATABASE; a_is_server:BOOLEAN)
 		local
 			l_difficulty:NATURAL_32
-			l_ctr, l_player_old_sprite_x:INTEGER_16
+			l_ctr:INTEGER_16
 			l_time_game_started, l_time_alive, l_highscore_time, l_last_game_time, l_time_ctr:INTEGER_32
-			l_ff_box, l_ff_box2, l_player_box:ARRAY[INTEGER_32]
 			l_event_ptr:POINTER
 			l_game_over, l_spawning:BOOLEAN
 
@@ -292,22 +461,26 @@ feature {NONE} -- Main
 			l_flying_floor, l_ff_two:FLYING_FLOOR
 			l_player:PLAYER
 			l_timer, l_highscore, l_last_game:SCORE
-			l_network_thread:MULTI_THREAD
+			l_network_thread:NETWORK_THREAD
 		do
 			create l_bg.make
-			create l_player.make
-			create l_enemy.make
 			create l_flying_floor.make (100, 185)
 			create l_ff_two.make (350, 165)
+			if a_is_server then
+				create l_player.make(0, a_screen, l_flying_floor, l_ff_two)
+			else
+				create l_player.make(1, a_screen, l_flying_floor, l_ff_two)
+			end
+			create l_enemy.make (a_screen, l_flying_floor, l_ff_two)
 			create l_timer.make (30)
 			create l_last_game.make (20)
 			create l_highscore.make (20)
 			create l_network_thread.make(a_is_server, l_enemy, l_player)
-			if not a_is_server then
-				l_player_old_sprite_x := l_player.sprite_x
-				l_player.change_sprite_x (l_enemy.sprite_x)
-				l_enemy.change_sprite_x (l_player_old_sprite_x)
-			end
+--			if not a_is_server then
+--				l_player_old_image_x := l_player.image_x
+--				l_player.change_image_x (l_enemy.image_x)
+--				l_enemy.change_image_x (l_player_old_image_x)
+--			end
 
 			l_time_ctr := 0
 			-- Spawn
@@ -334,27 +507,23 @@ feature {NONE} -- Main
 						ingame_keys(l_player, l_event_ptr)
 					end
 				end
-				l_ff_box := l_flying_floor.ff_box_array
-				l_ff_box2 := l_ff_two.ff_box_array
-				l_player_box := l_player.fill_sprite_box
 				if not l_spawning then
-					l_player.move (l_ff_box, l_ff_box2)
+					l_player.move
 					l_time_ctr := l_time_ctr + 1
-					l_enemy.init_ff_boxes (l_ff_box, l_ff_box2)
 --					l_player.animate
 					l_enemy.animate
 				end
 				l_time_alive := ((timer - l_time_game_started) // 10)
 				l_timer.assigner_score (((timer - l_time_game_started) // 1000).out + "." + ((((timer - l_time_game_started) \\ 1000) // 100).out) + " Seconds")
 				l_bg.apply_background (a_screen)
-				l_enemy.adjust_lives
+				l_player.adjust_lives
 --				l_enemy.show_lives (a_screen)
 				if l_spawning then
-					l_player.apply_spawn (a_screen)
-					l_enemy.apply_spawn (a_screen)
+					l_player.apply_spawn
+					l_enemy.apply_spawn
 				else
-					l_player.apply_player (a_screen)
-					l_enemy.apply_player (a_screen)
+					l_player.apply_player
+					l_enemy.apply_player
 				end
 				l_flying_floor.apply_flying_floor(a_screen)
 				l_ff_two.apply_flying_floor (a_screen)
@@ -367,7 +536,7 @@ feature {NONE} -- Main
 				elseif l_ctr = 74 then
 					l_spawning := false
 				end
-				if l_enemy.no_live then
+				if l_player.no_live then
 					if a_database.player_exist ("Highscore") then
 						if l_time_alive > a_database.get_time_played ("Highscore") then
 							a_database.update_table ("Highscore", 0, l_time_alive)
@@ -385,121 +554,6 @@ feature {NONE} -- Main
 			end
 			l_network_thread.stop
 			l_network_thread.join
-		end
-
-	single_player(a_screen:POINTER; a_database:DATABASE)
-		local
-			l_difficulty:NATURAL_32
-			l_ctr:INTEGER_16
-			l_time_game_started, l_time_alive, l_highscore_time, l_last_game_time, l_time_ctr:INTEGER_32
-			l_ff_box, l_ff_box2, l_player_box:ARRAY[INTEGER_32]
-			l_event_ptr:POINTER
-			l_game_over, l_spawning:BOOLEAN
-			l_chunk_path, l_c_string:C_STRING
-			l_chunk:POINTER
-
-			-- Instances de classe
-			l_bg:BACKGROUND
-			l_enemy:ENEMY
-			l_flying_floor, l_ff_two:FLYING_FLOOR
-			l_player:PLAYER
-			l_timer, l_highscore, l_last_game:SCORE
-			l_egg_lives:MENU
-		do
-			create l_bg.make
-			create l_player.make
-			create l_enemy.make
-			create l_flying_floor.make (100, 185)
-			create l_ff_two.make (350, 165)
-			create l_timer.make (30)
-			create l_last_game.make (20)
-			create l_highscore.make (20)
-			create l_egg_lives.make ("Ressources/Images/egg_lives.png")
-			-- Spawn
-			l_spawning := False
-
-			l_event_ptr := size_of_event_memory_allocation
-			l_time_game_started := timer
-			l_difficulty := 3
-			l_last_game_time := a_database.get_time_played ("LastGame")
-			l_highscore_time := a_database.get_time_played ("Highscore")
-			l_highscore.assigner_score ("Highscore: " + (l_highscore_time // 100).out + "." + ((l_highscore_time \\ 100) // 10).out + " Seconds")
-			l_last_game.assigner_score ("Last Game: " + (l_last_game_time // 100).out + "." + ((l_last_game_time \\ 100) // 10).out + " Seconds")
-			from
-			until
-				l_game_over
-			loop
-				from
-				until
-					{SDL_WRAPPER}.SDL_PollEvent(l_event_ptr) < 1
-				loop
-					if quit_request(l_event_ptr) then
-						l_game_over := true
-					elseif not l_spawning then
-						ingame_keys(l_player, l_event_ptr)
-					end
-				end
-				l_ff_box := l_flying_floor.ff_box_array
-				l_ff_box2 := l_ff_two.ff_box_array
-				l_player_box := l_player.fill_sprite_box
-				if not l_spawning then
-					l_player.move (l_ff_box, l_ff_box2)
-					l_time_ctr := l_time_ctr + 1
-					l_enemy.init_ff_boxes (l_ff_box, l_ff_box2)
---					l_player.animate
---					l_enemy.animate
-					l_enemy.play_tag (l_player_box)
-					l_enemy.move
-				end
-				l_time_alive := ((timer - l_time_game_started) // 10)
-				l_timer.assigner_score (((timer - l_time_game_started) // 1000).out + "." + ((((timer - l_time_game_started) \\ 1000) // 100).out) + " Seconds")
-				l_bg.apply_background (a_screen)
-				l_enemy.adjust_lives
---				l_enemy.show_lives (a_screen)
-				if l_spawning then
-					l_player.apply_spawn (a_screen)
-					l_enemy.apply_spawn (a_screen)
-				else
-					l_player.apply_player (a_screen)
-					l_enemy.apply_player (a_screen)
-				end
-				l_flying_floor.apply_flying_floor(a_screen)
-				l_ff_two.apply_flying_floor (a_screen)
-				l_timer.apply_text (a_screen, 5, 35)
-				l_highscore.apply_text (a_screen, 5, 5)
-				l_last_game.apply_text (a_screen, 5, 20)
-				show_lives (a_screen, l_enemy, l_egg_lives)
-				refresh (a_screen, l_difficulty)
-				if l_ctr < 74 then
-					l_ctr := l_ctr + 1
-				elseif l_ctr = 74 then
-					l_spawning := false
-				end
-				if l_enemy.no_live then
-					if a_database.player_exist ("Highscore") then
-						if l_time_alive > a_database.get_time_played ("Highscore") then
-							a_database.update_table ("Highscore", 0, l_time_alive)
-						end
-					else
-						a_database.insert_table ("Highscore", l_time_alive)
-					end
-					if a_database.player_exist ("LastGame") then
-						a_database.update_table ("LastGame", 0, l_time_alive)
-					else
-						a_database.insert_table ("LastGame", l_time_alive)
-					end
-					l_game_over := True
-				end
-			end
-			create l_chunk_path.make ("Ressources/Sounds/98874__robinhood76__01850-cartoon-dissapoint.wav")
-			l_chunk := {SDL_WRAPPER}.Mix_LoadWAV(l_chunk_path.item)
-			if {SDL_WRAPPER}.Mix_PlayChannel(-1, l_chunk, 0) < 0 then
-				print("Error PlayChannel")
-			end
-			l_bg.assigner_game_over
-			l_bg.apply_background (a_screen)
-			refresh (a_screen, l_difficulty)
-			{SDL_WRAPPER}.SDL_Delay(6000)
 		end
 
 feature {NONE} -- Menu
@@ -609,7 +663,6 @@ feature {NONE} -- Menu
 			if {SDL_WRAPPER}.Mix_PlayMusic(l_music, 1) < 0 then
 				print("Error PlayMusic")
 			end
-			{SDL_WRAPPER}.Mix_PauseMusic
 		end
 
 	apply_title
@@ -630,13 +683,29 @@ feature {NONE} -- Menu
 			{SDL_WRAPPER}.SDL_WM_SetIcon(l_icon_ptr, create{POINTER})
 		end
 
-	show_lives(a_screen:POINTER; a_enemy:ENEMY; a_egg_lives:MENU)
+	show_lives(a_screen:POINTER; a_player:PLAYER; a_egg_lives:MENU)
 		local
 			l_score:SCORE
 		do
 			a_egg_lives.apply_element_with_coordinates (a_screen, 450, 5)
-			l_score := a_enemy.score
+			l_score := a_player.score
 			l_score.apply_text (a_screen, a_egg_lives.x + 30 , 5)
+		end
+
+	show_boss_health(a_screen:POINTER; a_enemy:ENEMY; a_enemy_health_bar:MENU)
+		local
+			l_image_target, l_memory_manager:POINTER
+		do
+			l_image_target := l_memory_manager.memory_alloc({SDL_WRAPPER}.sizeof_SDL_Rect)
+
+			{SDL_WRAPPER}.set_target_area_x(l_image_target, 0)
+			{SDL_WRAPPER}.set_target_area_y(l_image_target, 0)
+			{SDL_WRAPPER}.set_target_area_w(l_image_target, a_enemy.life * 2)
+			{SDL_WRAPPER}.set_target_area_h(l_image_target, a_enemy_health_bar.h)
+
+			a_enemy_health_bar.set_image_rect (l_image_target)
+
+			a_enemy_health_bar.apply_element_with_coordinates (a_screen, 175, 10)
 		end
 
 feature {NONE} -- Jeu
@@ -671,8 +740,10 @@ feature {NONE} -- Jeu
 					a_player.set_move_left
 				elseif l_sym = {SDL_WRAPPER}.SDLK_RIGHT then
 					a_player.set_move_right
-				elseif l_sym = {SDL_WRAPPER}.SDLK_SPACE then
+				elseif l_sym = {SDL_WRAPPER}.SDLK_UP then
 					a_player.set_jump
+				elseif l_sym = {SDL_WRAPPER}.SDLK_SPACE then
+					a_player.shoot
 				elseif l_sym = {SDL_WRAPPER}.SDLK_h then
 					print_help
 				end

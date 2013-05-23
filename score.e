@@ -38,7 +38,7 @@ feature -- TTF
 		local
 			l_c_font:C_STRING
 		do
-			create l_c_font.make("Ressources/visitor1.ttf")
+			create l_c_font.make("Ressources/MINNIE.ttf")
 			font := {SDL_WRAPPER}.TTF_OpenFont(l_c_font.item, size)
 		end
 
@@ -58,6 +58,11 @@ feature -- TTF
 		do
 			create l_c_text.make (a_score)
 			text := {SDL_WRAPPER}.TTF_RenderText_Solid(font, l_c_text.item, color)
+			if
+				text.is_default_pointer
+			then
+				io.put_string ("Error at text")
+			end
 		end
 
 	apply_score(a_screen:POINTER)
@@ -94,6 +99,20 @@ feature -- TTF
 			if
 				{SDL_WRAPPER}.SDL_BlitSurface(text, create{POINTER}, a_screen, l_target_area) < 0
 			then
+				if
+					text.is_default_pointer
+				then
+					io.put_string ("text is empty")
+				elseif
+					a_screen.is_default_pointer
+				then
+					io.put_string ("a_screen is empty")
+				elseif
+					l_target_area.is_default_pointer
+				then
+					io.put_string ("l_target_area is empty")
+				end
+				io.put_new_line
 				io.put_string ("Erreur lors de l'application du TTF. %N(SDL_BlitSurface returned -1) at apply_img")
 			end
 			l_target_area.memory_free

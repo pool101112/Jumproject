@@ -8,7 +8,7 @@ class
 	FLYING_FLOOR
 
 inherit
-	GROUND
+	IMAGE
 
 create
 	make
@@ -38,46 +38,36 @@ feature {GAME} -- Image
 	apply_flying_floor(a_screen:POINTER)
 	-- Applique l'image
 		do
-			apply_img(a_screen, create{POINTER}, ff_x, ff_y)
+			apply_img(a_screen, create{POINTER}, image_x, image_y)
 		end
 
 feature {GAME} -- Coordonnées
 
-	----- Variables de classe -----
-	ff_x, ff_y, ff_w, ff_h:INTEGER_16
-	-------------------------------
-
 	set_start_pos(a_x, a_y:INTEGER_16)
 	-- Position de départ
 		do
-			ff_x := a_x
-			ff_y := a_y
-			ff_w := get_img_w
-			ff_h := get_img_h
+			image_x := a_x
+			image_y := a_y
+			image_w := get_img_w
+			image_h := get_img_h
 		end
 
 	ff_x_pos:INTEGER_16
 	-- Retourne x (Latitude)
 		do
-			Result := ff_x
+			Result := image_x
 		end
 
 	ff_y_pos:INTEGER_16
 	-- Retourne x (Altitude)
 		do
-			Result := ff_y
+			Result := image_y
 		end
 
-	ff_box_array:ARRAY[INTEGER]
-	-- Retourne un array contenant les coordonnées
-		local
-			l_ff_box:ARRAY[INTEGER]
+feature {ANY}
+
+	ff_box:TUPLE[INTEGER_16, INTEGER_16, INTEGER_16, INTEGER_16]
 		do
-			create l_ff_box.make_filled (0, 1, 4)
-			l_ff_box[1] := ff_x
-			l_ff_box[2] := ff_y
-			l_ff_box[3] := ff_w
-			l_ff_box[4] := ff_h
-			Result := l_ff_box
+			Result := [image_x, image_x + image_w, image_y, image_y + image_h]
 		end
 end

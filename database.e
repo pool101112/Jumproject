@@ -81,7 +81,7 @@ feature {GAME} -- Modifications
 
 			db.begin_transaction (False)
 
-			l_update.execute_with_arguments ([create {SQLITE_DOUBLE_ARG}.make (":SCORE", a_score), create {SQLITE_DOUBLE_ARG}.make (":TIME_PLAYED", a_time_played), a_player_name])
+			l_update.execute_with_arguments ([create {SQLITE_INTEGER_ARG}.make (":SCORE", a_score), create {SQLITE_DOUBLE_ARG}.make (":TIME_PLAYED", a_time_played), a_player_name])
 			db.commit
 		end
 

@@ -5,7 +5,7 @@ note
 	revision: "$Revision$"
 
 class
-	MULTI_THREAD
+	NETWORK_THREAD
 
 inherit
 	THREAD
@@ -19,8 +19,8 @@ create
 feature {GAME} -- Make
 
 	stop_thread:BOOLEAN
-	server:NETWRK_SERVER
-	client:NETWRK_CLIENT
+	server:NET_SERVER
+	client:NET_CLIENT
 	enemy:ENEMY
 	player:PLAYER
 	is_server:BOOLEAN
@@ -46,13 +46,13 @@ feature {GAME} -- Make
 				stop_thread
 			loop
 				if is_server then
-					enemy.change_sprite_x (server.read)
-					enemy.change_sprite_y (server.read)
-					server.send(player.sprite_x, player.sprite_y)
+					enemy.change_image_x (server.read)
+					enemy.change_image_y (server.read)
+					server.send (player.sprite_x, player.sprite_y)
 				else
 					client.send (player.sprite_x, player.sprite_y)
-					enemy.change_sprite_x (client.read)
-					enemy.change_sprite_y (client.read)
+					enemy.change_image_x (client.read)
+					enemy.change_image_y (client.read)
 				end
 			end
 			if is_server then

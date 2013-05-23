@@ -5,12 +5,12 @@ note
 	revision: "$Revision$"
 
 class
-	NETWRK_SERVER
+	NET_SERVER
 
 create
 	make
 
-feature{MULTI_THREAD} -- Make
+feature{NETWORK_THREAD} -- Make
 
 	client_socket:NETWORK_STREAM_SOCKET
 
