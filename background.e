@@ -22,7 +22,7 @@ feature {GAME} -- Image
 
 	assigner_ptr_image
 		do
-			create_img_ptr("Ressources/background.bmp")
+			create_img_ptr("Ressources//Images/background2.png")
 		end
 
 	assigner_game_over

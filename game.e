@@ -26,16 +26,12 @@ feature {NONE} -- Main
 		local
 			l_screen:POINTER
 		do
-			-- Video
 			init_sdl_video
 			l_screen := init_screen
-				-- Titre et icone de la fenêtre
 			apply_title
 			apply_icon
-			-- Audio
 			init_sdl_audio
 			start_music
-			-- Menu principal
 			main_menu(l_screen)
 		end
 
@@ -43,43 +39,19 @@ feature {NONE} -- Main
 		local
 			l_event_ptr:POINTER
 			l_exit, l_go_singleplayer_menu, l_go_multiplayer_menu, l_egg_is_hidden:BOOLEAN
-			l_easter_egg_parts_discovered, l_easter_ctr:INTEGER_8
-			l_easter_part_1_activated, l_easter_part_2_activated, l_easter_part_3_activated:BOOLEAN
-			l_string_list:LIST[STRING_8]
 
-			l_menu, l_singleplayer_button, l_multiplayer_button, l_quit_button, l_egg, l_y_part, l_title_egg, l_i_dot:MENU
-			l_egg_crack:SOUND
+			l_menu, l_singleplayer_button, l_multiplayer_button, l_quit_button, l_egg_pointer:MENU
+			l_easter_egg:EASTER_EGG
 		do
 			-- Initialisation de l_screen
 			create l_menu.make ("Ressources/Images/menu_screen4.png")
 			create l_singleplayer_button.make ("Ressources/Images/Single_Player2.png")
 			create l_multiplayer_button.make ("Ressources/Images/Multiplayer2.png")
 			create l_quit_button.make ("Ressources/Images/Quit2.png")
-			create l_egg.make ("Ressources/Images/yoshi_egg.png")
-			create l_title_egg.make ("Ressources/Images/menu_egg_1.png")
-			create {ARRAYED_LIST[STRING]} l_string_list.make (25)
-			create l_egg_crack.make ("Ressources/Sounds/egg_crack_1.wav")
-			l_string_list.extend ("Ressources/Images/menu_egg_f_1.png")
-			l_string_list.extend ("Ressources/Images/menu_egg_f_2.png")
-			l_string_list.extend ("Ressources/Images/menu_egg_f_3.png")
-			l_title_egg.add_img (l_string_list)
-			l_string_list.wipe_out
-			create l_y_part.make ("Ressources/Images/y_part_1.png")
-			l_y_part.change_x (246)
-			l_y_part.change_y (18)
-			l_string_list.extend ("Ressources/Images/y_part_f_1.png")
-			l_string_list.extend ("Ressources/Images/y_part_f_2.png")
-			l_string_list.extend ("Ressources/Images/y_part_f_3.png")
-			l_string_list.extend ("Ressources/Images/y_part_f_4.png")
-			l_y_part.add_img (l_string_list)
-			l_string_list.wipe_out
-			create l_i_dot.make ("Ressources/Images/i_dot_1.png")
-			l_egg.change_x(160)
+			create l_egg_pointer.make ("Ressources/Images/yoshi_egg.png")
+			create l_easter_egg.make(a_screen)
+			l_egg_pointer.change_x(160)
 			l_event_ptr := size_of_event_memory_allocation
-			l_easter_part_1_activated := false
-			l_easter_part_2_activated := false
-			l_easter_part_3_activated := false
-			l_easter_egg_parts_discovered := 0
 
 			from
 			until
@@ -100,52 +72,43 @@ feature {NONE} -- Main
 					if quit_request(l_event_ptr) then
 						l_exit := True
 					elseif over_button(l_event_ptr, l_singleplayer_button) then
-						l_egg.change_y(l_singleplayer_button.y + 5)
+						l_egg_pointer.change_y(l_singleplayer_button.y + 5)
 						l_egg_is_hidden := False
 						if click(l_event_ptr) then
 							l_go_singleplayer_menu := True
 						end
 					elseif over_button(l_event_ptr, l_multiplayer_button) then
-						l_egg.change_y(l_multiplayer_button.y + 5)
+						l_egg_pointer.change_y(l_multiplayer_button.y + 5)
 						l_egg_is_hidden := False
 						if click(l_event_ptr) then
 							l_go_multiplayer_menu := True
 						end
 					elseif over_button(l_event_ptr, l_quit_button) then
-						l_egg.change_y (l_quit_button.y + 5)
+						l_egg_pointer.change_y (l_quit_button.y + 5)
 						l_egg_is_hidden := False
 						if click(l_event_ptr) then
 							l_exit := True
 						end
-					elseif over_button(l_event_ptr, l_y_part) AND not l_easter_part_1_activated then
+					elseif over_element(l_event_ptr, l_easter_egg.y_part) then
 						if click(l_event_ptr) then
-							l_easter_part_1_activated := true
-							l_easter_ctr := 0
+							l_easter_egg.activate_y_part
+						end
+					elseif over_element(l_event_ptr, l_easter_egg.i_dot) then
+						if click(l_event_ptr) then
+							l_easter_egg.activate_i_dot
 						end
 					end
 				end
-
-				if l_easter_part_1_activated then
-					if l_easter_ctr <= 3 then
-						l_y_part.assign_ptr (l_easter_ctr + 2)
-						l_y_part.change_y (l_y_part.y - 2)
-						if l_easter_ctr = 3 then
-							l_y_part.change_x (l_y_part.x - 3)
-							l_title_egg.assign_ptr (2)
-							l_egg_crack.play_sound
-						end
-						l_easter_ctr := l_easter_ctr + 1
-					end
+				if l_easter_egg.egg_hits = 3 then
+					print("Exploding babies!")
 				end
 				l_menu.apply_background (a_screen)
-				l_y_part.apply_element_with_coordinates (a_screen, l_y_part.x, l_y_part.y)
-				l_title_egg.apply_element_with_coordinates (a_screen, 248, 34)
-				l_i_dot.apply_element_with_coordinates (a_screen, 301, 23)
+				l_easter_egg.apply_easter_egg_elements
 				l_singleplayer_button.apply_element_with_coordinates (a_screen, 200, 100)
 				l_multiplayer_button.apply_element_with_coordinates (a_screen, 200, (l_singleplayer_button.y + 45))
 				l_quit_button.apply_element_with_coordinates (a_screen, 200, (l_multiplayer_button.y + 50))
 				if not l_egg_is_hidden then
-					l_egg.apply_element (a_screen)
+					l_egg_pointer.apply_element (a_screen)
 				end
 				refresh(a_screen, 12)
 			end
@@ -312,8 +275,8 @@ feature {NONE} -- Main
 					end
 				end
 				l_menu.apply_background (a_screen)
-				l_host_button.apply_element_with_coordinates (a_screen, 75, 100)
-				l_connect_button.apply_element_with_coordinates (a_screen, 250, (l_host_button.y + 50))
+				l_host_button.apply_element_with_coordinates (a_screen, 200, 100)
+				l_connect_button.apply_element_with_coordinates (a_screen, 200, (l_host_button.y + 50))
 				l_back_button.apply_element_with_coordinates (a_screen, 200, (l_connect_button.y + 50))
 				if not l_egg_is_hidden then
 					l_egg.apply_element (a_screen)
@@ -342,8 +305,8 @@ feature {NONE} -- Main
 			l_game_over_sound:SOUND
 		do
 			create l_bg.make
-			create l_flying_floor.make (100, 185)
-			create l_ff_two.make (350, 165)
+			create l_flying_floor.make (100, 165)
+			create l_ff_two.make (350, 155)
 			create l_player.make(0, a_screen, l_flying_floor, l_ff_two)
 			create l_enemy.make (a_screen, l_flying_floor, l_ff_two)
 			create l_artificial_intelligence_thread.make (l_player, l_enemy, l_flying_floor, l_ff_two)
@@ -477,9 +440,9 @@ feature {NONE} -- Main
 			create l_highscore.make (20)
 			create l_network_thread.make(a_is_server, l_enemy, l_player)
 --			if not a_is_server then
---				l_player_old_image_x := l_player.image_x
---				l_player.change_image_x (l_enemy.image_x)
---				l_enemy.change_image_x (l_player_old_image_x)
+--				l_player_old_x := l_player.x
+--				l_player.change_x (l_enemy.x)
+--				l_enemy.change_x (l_player_old_x)
 --			end
 
 			l_time_ctr := 0
@@ -566,6 +529,18 @@ feature {NONE} -- Menu
 			l_mouse_x := {SDL_WRAPPER}.get_SDL_MouseButtonEvent_x(a_event_ptr)
 			l_mouse_y := {SDL_WRAPPER}.get_SDL_MouseButtonEvent_y(a_event_ptr)
 			if (l_mouse_x >= a_button.x AND l_mouse_x <= (a_button.x + a_button.w)) AND (l_mouse_y >= a_button.y AND l_mouse_y <= (a_button.y + a_button.h)) then
+				Result := True
+			end
+		end
+
+	over_element(a_event_ptr:POINTER; a_element:EASTER_EGG_ELEMENT):BOOLEAN
+		local
+			l_mouse_x, l_mouse_y:INTEGER_16
+		do
+			Result := False
+			l_mouse_x := {SDL_WRAPPER}.get_SDL_MouseButtonEvent_x(a_event_ptr)
+			l_mouse_y := {SDL_WRAPPER}.get_SDL_MouseButtonEvent_y(a_event_ptr)
+			if (l_mouse_x >= a_element.x AND l_mouse_x <= (a_element.x + a_element.w)) AND (l_mouse_y >= a_element.y AND l_mouse_y <= (a_element.y + a_element.h)) then
 				Result := True
 			end
 		end

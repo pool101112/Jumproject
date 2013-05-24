@@ -13,8 +13,6 @@ inherit
 		make as make_thread
 	end
 
-	COLLISION
-
 create
 	make
 
@@ -51,8 +49,8 @@ feature {GAME} -- Thread pour l'IA
 		do
 			{SDL_WRAPPER}.SDL_Delay(500)
 
-			l_ff_1_box := ff_1_object.ff_box
-			l_ff_2_box := ff_2_object.ff_box
+			l_ff_1_box := ff_1_object.box
+			l_ff_2_box := ff_2_object.box
 
 			l_lives := player_object.lives
 
@@ -61,8 +59,8 @@ feature {GAME} -- Thread pour l'IA
 				stop_thread
 			loop
 				move_mutex.lock
-				l_player_box := player_object.player_box
-				l_enemy_box := enemy_object.enemy_box
+				l_player_box := player_object.box
+				l_enemy_box := enemy_object.box
 				move_mutex.unlock
 
 				if l_wait_ctr > 0 then
@@ -123,7 +121,7 @@ feature {GAME} -- Thread pour l'IA
 						end
 					end
 
-					if is_collision (l_enemy_box, l_player_box) then
+					if enemy_object.is_collision (player_object) then
 						enemy_object.collision_sound
 						l_wait_ctr := 127
 						enemy_object.set_stop_left

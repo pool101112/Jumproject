@@ -46,13 +46,13 @@ feature {GAME} -- Make
 				stop_thread
 			loop
 				if is_server then
-					enemy.change_image_x (server.read)
-					enemy.change_image_y (server.read)
+					enemy.change_x (server.read)
+					enemy.change_y (server.read)
 					server.send (player.sprite_x, player.sprite_y)
 				else
 					client.send (player.sprite_x, player.sprite_y)
-					enemy.change_image_x (client.read)
-					enemy.change_image_y (client.read)
+					enemy.change_x (client.read)
+					enemy.change_y (client.read)
 				end
 			end
 			if is_server then

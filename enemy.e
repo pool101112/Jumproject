@@ -10,8 +10,6 @@ class
 inherit
 	SPRITE
 
-	COLLISION
-
 create
 	make
 
@@ -30,7 +28,7 @@ feature {GAME} -- Image
 			create_img_ptr_new(jump_left_path)
 			create_img_ptr_new(jump_right_path)
 			assigner_img_ptr_from_array (1)
-			set_start(1112, 279)
+			set_start(1112, 268)
 			set_velocity(4, 3)
 --			assigner_spawn
 			init_flying_floors (a_ff_object, a_ff_object_2)

@@ -7,9 +7,30 @@ note
 deferred class
 	COLLISION
 
-feature {GAME, SPRITE} -- Collision
+feature
 
-	is_collision (a_object, a_object_2:TUPLE[left, right, top, bottom:INTEGER_16]):BOOLEAN
+	box:TUPLE[left, right, top, bottom:INTEGER_16]
+		deferred
+		end
+
+feature {AI_THREAD} -- Collision
+
+	is_collision(a_other:COLLISION):BOOLEAN
+		do
+			if box.right < a_other.box.left then
+				Result := false
+			elseif box.left > a_other.box.right then
+				Result := false
+			elseif box.bottom < a_other.box.top then
+				Result := false
+			elseif box.top > a_other.box.bottom then
+				Result := false
+			else
+				Result := true
+			end
+		end
+
+	is_collision_old (a_object, a_object_2:TUPLE[left, right, top, bottom:INTEGER_16]):BOOLEAN
 	-- Vérifie si une collision survient entre 2 objets
 		do
 			if a_object.right < a_object_2.left then

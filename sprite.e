@@ -37,7 +37,7 @@ feature {GAME, NETWORK_THREAD, AI_THREAD} -- Images
 				sprite_ctr := 0
 			end
 
-			apply_sprite(a_screen, image_x, image_y, l_image_rect_x, 0)
+			apply_sprite(a_screen, x, y, l_image_rect_x, 0)
 
 		ensure
 				sprite_ctr_is_not_above_25 : sprite_ctr <= a_ctr_limit
@@ -64,6 +64,13 @@ feature {GAME, NETWORK_THREAD, AI_THREAD} -- Images
 feature {GAME, NETWORK_THREAD, AI_THREAD, PLAYER} -- Moves
 	sprite_w, sprite_h, x_vel, y_vel:INTEGER_16
 	ff1_box, ff2_box, enemy_box:TUPLE[left, right, top, bottom:INTEGER_16]
+	ff_object,ff_object_2:COLLISION
+
+	box:TUPLE[left, right, top, bottom:INTEGER_16]
+		do
+			Result:=enemy_box
+		end
+
 	move_mutex:MUTEX
 
 	init_mutex
@@ -157,14 +164,14 @@ feature {GAME, NETWORK_THREAD, AI_THREAD, PLAYER} -- Moves
 
 	move_left
 		do
-			old_image_x := image_x
-			image_x := image_x - x_vel
-			enemy_box := [Current.image_x, Current.image_x + Current.image_w // 8, Current.image_y, Current.image_y + Current.image_h]
-			if image_x < 0 then
+			old_x := x
+			x := x - x_vel
+			enemy_box := [Current.x, Current.x + Current.w // 8, Current.y, Current.y + Current.h]
+			if x < 0 then
 				undo_move(x_vel)
-			elseif is_collision (ff1_box, enemy_box) then
+			elseif is_collision (ff_object) then
 				undo_move(x_vel)
-			elseif is_collision (ff2_box, enemy_box) then
+			elseif is_collision (ff_object_2) then
 				undo_move(x_vel)
 			end
 		end
@@ -174,22 +181,24 @@ feature {GAME, NETWORK_THREAD, AI_THREAD, PLAYER} -- Moves
 		require
 			x_vel_is_higher_than_0 : x_vel > 0
 		do
-			old_image_x := image_x
-			image_x := image_x + x_vel
-			enemy_box := [Current.image_x, Current.image_x + Current.image_w // 8, Current.image_y, Current.image_y + Current.image_h]
-			if (image_x + (image_w // 8)) > 556 then
-				undo_move(x_vel - x_vel - x_vel)
-			elseif is_collision (ff1_box, enemy_box) then
-				undo_move(x_vel - x_vel - x_vel)
-			elseif is_collision (ff2_box, enemy_box) then
-				undo_move(x_vel - x_vel - x_vel)
+			old_x := x
+			x := x + x_vel
+			enemy_box := [Current.x, Current.x + Current.w // 8, Current.y, Current.y + Current.h]
+			if (x + (w // 8)) > 556 then
+				undo_move(-x_vel)
+			elseif is_collision (ff_object) then
+				undo_move(-x_vel)
+			elseif is_collision (ff_object_2) then
+				undo_move(-x_vel)
 			end
 		end
 
 	init_flying_floors (a_ff_object, a_ff_object_2:FLYING_FLOOR)
 		do
-			ff1_box := [a_ff_object.image_x, a_ff_object.image_x + a_ff_object.image_w, a_ff_object.image_y, a_ff_object.image_y + a_ff_object.image_h]
-			ff2_box := [a_ff_object_2.image_x, a_ff_object_2.image_x + a_ff_object_2.image_w, a_ff_object_2.image_y, a_ff_object_2.image_y + a_ff_object_2.image_h]
+			ff_object:=a_ff_object
+			ff_object_2:=a_ff_object_2
+			ff1_box := [a_ff_object.x, a_ff_object.x + a_ff_object.w, a_ff_object.y, a_ff_object.y + a_ff_object.h]
+			ff2_box := [a_ff_object_2.x, a_ff_object_2.x + a_ff_object_2.w, a_ff_object_2.y, a_ff_object_2.y + a_ff_object_2.h]
 		end
 
 	set_start(screen_w, screen_h:INTEGER_16)
@@ -200,8 +209,8 @@ feature {GAME, NETWORK_THREAD, AI_THREAD, PLAYER} -- Moves
 		do
 			sprite_w := get_img_w
 			sprite_h := get_img_h
-			image_x := (screen_w // 2) - (sprite_w // 2)
-			image_y := screen_h - sprite_h - 30
+			x := (screen_w // 2) - (sprite_w // 2)
+			y := screen_h - sprite_h - 45
 			ensure
 				sprite_w_is_higher_than_0 : sprite_w > 0
 				sprite_h_is_higher_than_0 : sprite_h > 0
@@ -211,14 +220,14 @@ feature {GAME, NETWORK_THREAD, AI_THREAD, PLAYER} -- Moves
 	-- Effectue un jump
 		do
 			if jump_ctr <= 30 then
-				old_image_y := image_y
-				image_y := image_y - (y_vel*2)
+				old_y := y
+				y := y - (y_vel*2)
 				jump_ctr := jump_ctr + 1
-				enemy_box := [Current.image_x, Current.image_x + Current.image_w // 8, Current.image_y, Current.image_y + Current.image_h]
-				if is_collision (ff1_box, enemy_box) then
+				enemy_box := [Current.x, Current.x + Current.w // 8, Current.y, Current.y + Current.h]
+				if is_collision (ff_object) then
 					undo_jump_gravity(y_vel)
 					jump_ctr := 31
-				elseif is_collision (ff2_box, enemy_box) then
+				elseif is_collision (ff_object_2) then
 					undo_jump_gravity(y_vel)
 					jump_ctr := 31
 				end
@@ -231,11 +240,11 @@ feature {GAME, NETWORK_THREAD, AI_THREAD, PLAYER} -- Moves
 	gravity
 	-- Applique la gravité
 		do
-			old_image_y := image_y
-			image_y := image_y + y_vel
-			enemy_box := [Current.image_x, Current.image_x + Current.image_w // 8, Current.image_y, Current.image_y + Current.image_h]
+			old_y := y
+			y := y + y_vel
+			enemy_box := [Current.x, Current.x + Current.w // 8, Current.y, Current.y + Current.h]
 			is_in_air := true
-			if (Current.image_y + Current.image_h) > 248 then
+			if (Current.y + Current.h) > 238 then
 				undo_jump_gravity(y_vel - y_vel - y_vel)
 				is_in_air := false
 				if not is_moving_right and not is_moving_left then
@@ -249,7 +258,7 @@ feature {GAME, NETWORK_THREAD, AI_THREAD, PLAYER} -- Moves
 				elseif is_moving_left then
 					assigner_img_ptr_from_array(1)
 				end
-			elseif is_collision (ff1_box, enemy_box) then
+			elseif is_collision (ff_object) then
 				undo_jump_gravity(y_vel - y_vel - y_vel)
 				is_in_air := false
 				if not is_moving_right and not is_moving_left then
@@ -263,7 +272,7 @@ feature {GAME, NETWORK_THREAD, AI_THREAD, PLAYER} -- Moves
 				elseif is_moving_left then
 					assigner_img_ptr_from_array(1)
 				end
-			elseif is_collision (ff2_box, enemy_box) then
+			elseif is_collision (ff_object_2) then
 				undo_jump_gravity(y_vel - y_vel - y_vel)
 				is_in_air := false
 				if not is_moving_right and not is_moving_left then
@@ -278,37 +287,37 @@ feature {GAME, NETWORK_THREAD, AI_THREAD, PLAYER} -- Moves
 					assigner_img_ptr_from_array(1)
 				end
 			end
-			enemy_box := [Current.image_x, Current.image_x + Current.image_w // 8, Current.image_y, Current.image_y + Current.image_h]
+			enemy_box := [Current.x, Current.x + Current.w // 8, Current.y, Current.y + Current.h]
 		end
 
 	undo_move(a_x_vel:INTEGER_16)
 	-- Défait un mouvement (Gauche/Droite)
 		do
-			image_x := image_x + a_x_vel
+			x := x + a_x_vel
 		end
 
 	undo_jump_gravity(a_y_vel:INTEGER_16)
 	-- Défait un mouvement (Haut/Bas)
 		do
-			image_y := image_y + a_y_vel
+			y := y + a_y_vel
 		end
 
 feature {ANY} -- Animations
 
 	animate
 		do
-			if old_image_x < image_x then
+			if old_x < x then
 				looking_right := True
-				if old_image_y /= image_y then
+				if old_y /= y then
 					assigner_img_ptr_from_array (6)
-				elseif old_image_y = image_y then
+				elseif old_y = y then
 					assigner_img_ptr_from_array (2)
 				end
-			elseif old_image_x > image_x then
+			elseif old_x > x then
 				looking_right := False
-				if old_image_y /= image_y then
+				if old_y /= y then
 					assigner_img_ptr_from_array (5)
-				elseif old_image_y = image_y then
+				elseif old_y = y then
 					assigner_img_ptr_from_array (1)
 				end
 			else
@@ -323,17 +332,17 @@ feature {ANY} -- Animations
 feature {ANY} -- Coordonnées du sprite
 
 	sprite_x:INTEGER_16
-	-- Valeur de `image_x'
+	-- Valeur de `x'
 		do
-			Result := image_x
+			Result := x
 			ensure
 				Result_x_is_not_below_0 : Result >= 0
 		end
 
 	sprite_y:INTEGER_16
-	-- Valeur de `image_y'
+	-- Valeur de `y'
 		do
-			Result := image_y
+			Result := y
 			ensure
 				Result_y_is_not_below_0 : Result >= 0
 		end
@@ -354,17 +363,17 @@ feature {ANY} -- Coordonnées du sprite
 			y_vel := a_velocity
 		end
 
-	change_image_x (a_x:INTEGER_16)
+	change_x (a_x:INTEGER_16)
 		do
-			old_image_x := image_x
-			image_x := a_x
+			old_x := x
+			x := a_x
 		end
 
 
-	change_image_y (a_y:INTEGER_16)
+	change_y (a_y:INTEGER_16)
 		do
-			old_image_y := image_y
-			image_y := a_y
+			old_y := y
+			y := a_y
 		end
 
 end

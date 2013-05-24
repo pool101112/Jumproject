@@ -9,6 +9,9 @@ class
 
 inherit
 	SPRITE
+	redefine
+		box
+	end
 
 create
 	make
@@ -30,9 +33,9 @@ feature -- Images
 			create_img_ptr_new(jump_right_path)
 			assigner_img_ptr_from_array (1)
 			if (a_player_number = 0) then
-				set_start(556, 279)
+				set_start(556, 268)
 			else
-				set_start(1000, 279)
+				set_start(1000, 268)
 			end
 			set_velocity(4, 3)
 			init_score
@@ -83,9 +86,9 @@ feature -- Images
 
 feature -- Moves
 
-	player_box:TUPLE[INTEGER_16, INTEGER_16, INTEGER_16, INTEGER_16]
+	box:TUPLE[left, right, top, bottom:INTEGER_16]
 		do
-			Result := [image_x, image_x + image_w // 8, image_y, image_y + image_h]
+			Result := [x, x + w // 8, y, y + h]
 		end
 
 feature {ANY} -- Actions
@@ -101,7 +104,7 @@ feature {ANY} -- Actions
 	apply_proj (a_enemy:ENEMY)
 		do
 			if projectile.shooting then
-				projectile.change_image_x (projectile.image_x + projectile.x_vel)
+				projectile.change_x (projectile.x + projectile.x_vel)
 				projectile.apply_proj (a_enemy)
 			else
 				shooting := false

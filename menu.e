@@ -16,7 +16,6 @@ create
 feature {GAME} -- Affichage du menu
 
 	menu_img_path:STRING
-	x, y, w, h:INTEGER_16
 	image_rect:POINTER
 
 	make (a_path:STRING)

@@ -16,12 +16,12 @@ feature {NONE} -- Assignation Pointeur
 		deferred
 		end
 
-feature {SPRITE, BACKGROUND} -- Gestion des images
+feature {SPRITE, BACKGROUND, GAME, EASTER_EGG} -- Gestion des images
 
 	-- Variables de classe --
 	img_ptr, screen, memory_manager:POINTER
 	img_ptr_list:LIST[POINTER]
-	image_x, image_y, image_w, image_h, old_image_x, old_image_y:INTEGER_16
+	x, y, w, h, old_x, old_y:INTEGER_16
 	img_array_pos:INTEGER_8
 	-------------------------
 
@@ -52,20 +52,20 @@ feature {SPRITE, BACKGROUND} -- Gestion des images
 			img_ptr := img_ptr_list[a_pos];
 		end
 
-	apply_img(a_screen, a_image_rect:POINTER; a_image_x, a_image_y:INTEGER_16)
+	apply_img(a_screen, a_image_rect:POINTER; a_x, a_y:INTEGER_16)
 	-- Applique l'image à la fenêtre
 		local
 			l_target_area:POINTER
 		do
 			l_target_area := memory_manager.memory_alloc({SDL_WRAPPER}.sizeof_SDL_Rect)
 
-			image_w := get_img_w
-			image_h := get_img_h
+			w := get_img_w
+			h := get_img_h
 
-			{SDL_WRAPPER}.set_target_area_x(l_target_area, a_image_x)
-			{SDL_WRAPPER}.set_target_area_y(l_target_area, a_image_y)
-			{SDL_WRAPPER}.set_target_area_w(l_target_area, image_w)
-			{SDL_WRAPPER}.set_target_area_h(l_target_area, image_h)
+			{SDL_WRAPPER}.set_target_area_x(l_target_area, a_x)
+			{SDL_WRAPPER}.set_target_area_y(l_target_area, a_y)
+			{SDL_WRAPPER}.set_target_area_w(l_target_area, w)
+			{SDL_WRAPPER}.set_target_area_h(l_target_area, h)
 
 			if
 				{SDL_WRAPPER}.SDL_BlitSurface(img_ptr, a_image_rect, a_screen, l_target_area) < 0

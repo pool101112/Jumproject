@@ -20,8 +20,8 @@ feature {ANY} -- Main
 	make (a_shoot_to_right:BOOLEAN; a_player:PLAYER)
 		do
 			proj_ctr := 0
-			image_x := a_player.image_x + a_player.image_w // 8
-			image_y := a_player.image_y + 10
+			x := a_player.x + a_player.w // 8
+			y := a_player.y + 10
 			screen := a_player.screen
 			assigner_ptr_image
 			if a_shoot_to_right then
@@ -46,7 +46,7 @@ feature {ANY} -- Main
 		local
 			l_egg_broke:SOUND
 		do
-			if image_x + image_w >= 556 or image_x <= 0 then
+			if x + w >= 556 or x <= 0 then
 				if proj_ctr = 0 then
 					x_vel := 0
 					assigner_img_ptr_from_array(2)
@@ -56,7 +56,7 @@ feature {ANY} -- Main
 					create l_egg_broke.make ("Ressources/Sounds/egg_crack_1.wav")
 				end
 				proj_ctr := proj_ctr + 1
-			elseif not (image_x + image_w < a_enemy.image_x or image_x > a_enemy.image_x + a_enemy.image_w // 8 or image_y + image_h < a_enemy.image_y or image_y > a_enemy.image_y + a_enemy.image_h) then
+			elseif not (x + w < a_enemy.x or x > a_enemy.x + a_enemy.w // 8 or y + h < a_enemy.y or y > a_enemy.y + a_enemy.h) then
 				if proj_ctr = 0 then
 					x_vel := 0
 					assigner_img_ptr_from_array(2)
@@ -68,7 +68,7 @@ feature {ANY} -- Main
 				end
 				proj_ctr := proj_ctr + 1
 			end
-			apply_img(screen, create {POINTER}, image_x, image_y)
+			apply_img(screen, create {POINTER}, x, y)
 		end
 
 end
