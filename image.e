@@ -12,7 +12,7 @@ inherit
 
 feature {NONE} -- Assignation Pointeur
 
-	assigner_ptr_image
+	create_image_list (a_path_list:LIST[STRING])
 		deferred
 		end
 
@@ -25,21 +25,12 @@ feature {SPRITE, BACKGROUND, GAME, EASTER_EGG} -- Gestion des images
 	img_array_pos:INTEGER_8
 	-------------------------
 
-	create_img_ptr(a_image_file:STRING)
-	-- Créé un pointeur vers l'image
-		local
-			l_c_img:C_STRING
-		do
-			create l_c_img.make(a_image_file)
-			img_ptr := {SDL_WRAPPER}.SDL_IMG_Load(l_c_img.item)
-		end
-
 	create_img_ptr_list
 		do
 			create {ARRAYED_LIST[POINTER]} img_ptr_list.make(6)
 		end
 
-	create_img_ptr_new(a_image_file:STRING)
+	create_img_ptr (a_image_file:STRING)
 		local
 			l_c_img:C_STRING
 		do
@@ -47,7 +38,7 @@ feature {SPRITE, BACKGROUND, GAME, EASTER_EGG} -- Gestion des images
 			img_ptr_list.extend ({SDL_WRAPPER}.SDL_IMG_Load(l_c_img.item))
 		end
 
-	assigner_img_ptr_from_array(a_pos:INTEGER)
+	assigner_img_ptr (a_pos:INTEGER)
 		do
 			img_ptr := img_ptr_list[a_pos];
 		end

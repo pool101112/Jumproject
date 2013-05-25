@@ -13,6 +13,7 @@ inherit
 	COLLISION
 
 feature {GAME, NETWORK_THREAD, AI_THREAD} -- Images
+	wait_ctr:INTEGER_8
 	sprite_ctr, jump_ctr:INTEGER_16
 	is_moving_left, is_moving_right, is_jumping, is_in_air, looking_right:BOOLEAN
 	spawn_left_path, wait_left_path, wait_right_path, go_left_path, go_right_path, jump_left_path, jump_right_path:STRING
@@ -20,7 +21,7 @@ feature {GAME, NETWORK_THREAD, AI_THREAD} -- Images
 	assigner_sprite(a_pos:INTEGER)
 	-- Assigne l'image
 		do
-			assigner_img_ptr_from_array (a_pos)
+			assigner_img_ptr (a_pos)
 		end
 
 	apply_sprite_image_x_y(a_screen:POINTER; a_ctr_limit:INTEGER_16)
@@ -63,12 +64,12 @@ feature {GAME, NETWORK_THREAD, AI_THREAD} -- Images
 
 feature {GAME, NETWORK_THREAD, AI_THREAD, PLAYER} -- Moves
 	sprite_w, sprite_h, x_vel, y_vel:INTEGER_16
-	ff1_box, ff2_box, enemy_box:TUPLE[left, right, top, bottom:INTEGER_16]
-	ff_object,ff_object_2:COLLISION
+	ff1_box, ff2_box, yoshi_box:TUPLE[left, right, top, bottom:INTEGER_16]
+	ff_object, ff_object_2, bonus_object:COLLISION
 
 	box:TUPLE[left, right, top, bottom:INTEGER_16]
 		do
-			Result:=enemy_box
+			Result := yoshi_box
 		end
 
 	move_mutex:MUTEX
@@ -98,7 +99,7 @@ feature {GAME, NETWORK_THREAD, AI_THREAD, PLAYER} -- Moves
 			looking_right := false
 			is_moving_left := true
 			if not is_in_air then
-				assigner_img_ptr_from_array(1)
+				assigner_img_ptr(1)
 			end
 		end
 
@@ -111,7 +112,7 @@ feature {GAME, NETWORK_THREAD, AI_THREAD, PLAYER} -- Moves
 			looking_right := true
 			is_moving_right := true
 			if not is_in_air then
-				assigner_img_ptr_from_array(2)
+				assigner_img_ptr(2)
 			end
 		end
 
@@ -120,7 +121,7 @@ feature {GAME, NETWORK_THREAD, AI_THREAD, PLAYER} -- Moves
 		do
 			is_moving_left := false
 			if not is_in_air and not is_moving_right then
-				assigner_img_ptr_from_array(3)
+				assigner_img_ptr(3)
 			end
 		end
 
@@ -129,7 +130,7 @@ feature {GAME, NETWORK_THREAD, AI_THREAD, PLAYER} -- Moves
 		do
 			is_moving_right := false
 			if not is_in_air and not is_moving_left then
-				assigner_img_ptr_from_array(4)
+				assigner_img_ptr(4)
 			end
 		end
 
@@ -154,9 +155,9 @@ feature {GAME, NETWORK_THREAD, AI_THREAD, PLAYER} -- Moves
 			end
 			if is_in_air then
 				if looking_right then
-					assigner_img_ptr_from_array(6)
+					assigner_img_ptr(6)
 				else
-					assigner_img_ptr_from_array(5)
+					assigner_img_ptr(5)
 				end
 			end
 			gravity
@@ -166,7 +167,7 @@ feature {GAME, NETWORK_THREAD, AI_THREAD, PLAYER} -- Moves
 		do
 			old_x := x
 			x := x - x_vel
-			enemy_box := [Current.x, Current.x + Current.w // 8, Current.y, Current.y + Current.h]
+			yoshi_box := [Current.x, Current.x + Current.w // 8, Current.y, Current.y + Current.h]
 			if x < 0 then
 				undo_move(x_vel)
 			elseif is_collision (ff_object) then
@@ -183,7 +184,7 @@ feature {GAME, NETWORK_THREAD, AI_THREAD, PLAYER} -- Moves
 		do
 			old_x := x
 			x := x + x_vel
-			enemy_box := [Current.x, Current.x + Current.w // 8, Current.y, Current.y + Current.h]
+			yoshi_box := [Current.x, Current.x + Current.w // 8, Current.y, Current.y + Current.h]
 			if (x + (w // 8)) > 556 then
 				undo_move(-x_vel)
 			elseif is_collision (ff_object) then
@@ -199,6 +200,11 @@ feature {GAME, NETWORK_THREAD, AI_THREAD, PLAYER} -- Moves
 			ff_object_2:=a_ff_object_2
 			ff1_box := [a_ff_object.x, a_ff_object.x + a_ff_object.w, a_ff_object.y, a_ff_object.y + a_ff_object.h]
 			ff2_box := [a_ff_object_2.x, a_ff_object_2.x + a_ff_object_2.w, a_ff_object_2.y, a_ff_object_2.y + a_ff_object_2.h]
+		end
+
+	init_bonus (a_bonus_object:POWER_UPS)
+		do
+			bonus_object := a_bonus_object
 		end
 
 	set_start(screen_w, screen_h:INTEGER_16)
@@ -221,9 +227,9 @@ feature {GAME, NETWORK_THREAD, AI_THREAD, PLAYER} -- Moves
 		do
 			if jump_ctr <= 30 then
 				old_y := y
-				y := y - (y_vel*2)
+				y := y - (y_vel * 2)
 				jump_ctr := jump_ctr + 1
-				enemy_box := [Current.x, Current.x + Current.w // 8, Current.y, Current.y + Current.h]
+				yoshi_box := [Current.x, Current.x + Current.w // 8, Current.y, Current.y + Current.h]
 				if is_collision (ff_object) then
 					undo_jump_gravity(y_vel)
 					jump_ctr := 31
@@ -242,52 +248,52 @@ feature {GAME, NETWORK_THREAD, AI_THREAD, PLAYER} -- Moves
 		do
 			old_y := y
 			y := y + y_vel
-			enemy_box := [Current.x, Current.x + Current.w // 8, Current.y, Current.y + Current.h]
+			yoshi_box := [Current.x, Current.x + Current.w // 8, Current.y, Current.y + Current.h]
 			is_in_air := true
 			if (Current.y + Current.h) > 238 then
 				undo_jump_gravity(y_vel - y_vel - y_vel)
 				is_in_air := false
 				if not is_moving_right and not is_moving_left then
 					if looking_right then
-						assigner_img_ptr_from_array(4)
+						assigner_img_ptr(4)
 					else
-						assigner_img_ptr_from_array(3)
+						assigner_img_ptr(3)
 					end
 				elseif is_moving_right then
-					assigner_img_ptr_from_array(2)
+					assigner_img_ptr(2)
 				elseif is_moving_left then
-					assigner_img_ptr_from_array(1)
+					assigner_img_ptr(1)
 				end
 			elseif is_collision (ff_object) then
 				undo_jump_gravity(y_vel - y_vel - y_vel)
 				is_in_air := false
 				if not is_moving_right and not is_moving_left then
 					if looking_right then
-						assigner_img_ptr_from_array(4)
+						assigner_img_ptr(4)
 					else
-						assigner_img_ptr_from_array(3)
+						assigner_img_ptr(3)
 					end
 				elseif is_moving_right then
-					assigner_img_ptr_from_array(2)
+					assigner_img_ptr(2)
 				elseif is_moving_left then
-					assigner_img_ptr_from_array(1)
+					assigner_img_ptr(1)
 				end
 			elseif is_collision (ff_object_2) then
 				undo_jump_gravity(y_vel - y_vel - y_vel)
 				is_in_air := false
 				if not is_moving_right and not is_moving_left then
 					if looking_right then
-						assigner_img_ptr_from_array(4)
+						assigner_img_ptr(4)
 					else
-						assigner_img_ptr_from_array(3)
+						assigner_img_ptr(3)
 					end
 				elseif is_moving_right then
-					assigner_img_ptr_from_array(2)
+					assigner_img_ptr(2)
 				elseif is_moving_left then
-					assigner_img_ptr_from_array(1)
+					assigner_img_ptr(1)
 				end
 			end
-			enemy_box := [Current.x, Current.x + Current.w // 8, Current.y, Current.y + Current.h]
+			yoshi_box := [Current.x, Current.x + Current.w // 8, Current.y, Current.y + Current.h]
 		end
 
 	undo_move(a_x_vel:INTEGER_16)
@@ -309,22 +315,22 @@ feature {ANY} -- Animations
 			if old_x < x then
 				looking_right := True
 				if old_y /= y then
-					assigner_img_ptr_from_array (6)
+					assigner_img_ptr (6)
 				elseif old_y = y then
-					assigner_img_ptr_from_array (2)
+					assigner_img_ptr (2)
 				end
 			elseif old_x > x then
 				looking_right := False
 				if old_y /= y then
-					assigner_img_ptr_from_array (5)
+					assigner_img_ptr (5)
 				elseif old_y = y then
-					assigner_img_ptr_from_array (1)
+					assigner_img_ptr (1)
 				end
 			else
 				if looking_right then
-					assigner_img_ptr_from_array (4)
+					assigner_img_ptr (4)
 				else
-					assigner_img_ptr_from_array (3)
+					assigner_img_ptr (3)
 				end
 			end
 		end

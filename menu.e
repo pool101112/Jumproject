@@ -18,36 +18,27 @@ feature {GAME} -- Affichage du menu
 	menu_img_path:STRING
 	image_rect:POINTER
 
-	make (a_path:STRING)
+	make (a_path_list:LIST[STRING])
 		do
-			create_img_ptr_list
-			create_img_ptr_new (a_path)
-			assign_ptr(1)
+			create_image_list (a_path_list)
 			image_rect := create{POINTER}
 		end
 
-	add_img (a_path_list:LIST[STRING])
+	create_image_list (a_path_list:LIST[STRING])
+	-- Cree une liste d'images
 		local
-			l_i:INTEGER_8
+			l_i:INTEGER
 		do
+			create_img_ptr_list
 			from
 				l_i := 1
 			until
 				l_i > a_path_list.count
 			loop
-				create_img_ptr_new (a_path_list[l_i])
+				create_img_ptr(a_path_list[l_i])
 				l_i := l_i + 1
 			end
-		end
-
-	assign_ptr(a_index:INTEGER)
-		do
-			assigner_img_ptr_from_array (a_index)
-		end
-
-	assigner_ptr_image
-		do
-			create_img_ptr (menu_img_path)
+			assigner_img_ptr (1)
 		end
 
 	apply_background(a_screen:POINTER)

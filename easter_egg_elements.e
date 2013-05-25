@@ -18,38 +18,38 @@ feature {EASTER_EGG} -- Constructeur
 	make (a_path_list:LIST[STRING]; a_screen:POINTER; a_x, a_y:INTEGER_16)
 		do
 			screen := a_screen
-			path_list := a_path_list
 			x := a_x
 			y := a_y
-			assigner_ptr_image
+			create_image_list (a_path_list)
 		end
 
-	assigner_ptr_image
+	create_image_list (a_path_list:LIST[STRING])
+	-- Cree une liste d'images
 		local
-			l_i:INTEGER_8
+			l_i:INTEGER
 		do
 			create_img_ptr_list
 			from
 				l_i := 1
 			until
-				l_i > path_list.count
+				l_i > a_path_list.count
 			loop
-				create_img_ptr_new (path_list[l_i])
+				create_img_ptr(a_path_list[l_i])
 				l_i := l_i + 1
 			end
-			assign_ptr (1)
+			assigner_img_ptr (1)
 		end
 
 	assign_ptr (a_index:INTEGER_8)
 		do
-			assigner_img_ptr_from_array (a_index)
+			assigner_img_ptr (a_index)
 		end
 
 feature {EASTER_EGG} -- Affichage
 
-	apply_to_screen
+	apply_to_screen(a_image_rect:POINTER)
 		do
-			apply_img (screen, create {POINTER}, x, y)
+			apply_img (screen, a_image_rect, x, y)
 		end
 
 

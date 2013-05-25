@@ -15,32 +15,36 @@ create
 
 feature {GAME} -- Image
 
-	make
+	make (a_path_list:LIST[STRING]; a_screen:POINTER)
 		do
-			assigner_ptr_image
+			screen := a_screen
+			create_image_list (a_path_list)
 		end
 
-	assigner_ptr_image
+	create_image_list (a_path_list:LIST[STRING])
+	-- Cree une liste d'images
+		local
+			l_i:INTEGER
 		do
-			create_img_ptr("Ressources//Images/background2.png")
+			create_img_ptr_list
+			from
+				l_i := 1
+			until
+				l_i > a_path_list.count
+			loop
+				create_img_ptr(a_path_list[l_i])
+				l_i := l_i + 1
+			end
+			assigner_img_ptr (1)
 		end
 
-	assigner_game_over
+	apply_background
 		do
-			create_img_ptr("Ressources/Images/game_over2.png")
+			apply_img(screen, create{POINTER}, 0, 0)
 		end
 
-	apply_background(a_screen:POINTER)
-		require
-			a_screen_is_not_null : not a_screen.is_default_pointer
+	fill_background(a_color:NATURAL_32)
 		do
-			apply_img(a_screen, create{POINTER}, 0, 0)
-		end
-
-	fill_background(a_screen:POINTER; a_color:NATURAL_32)
-		require
-			a_screen_is_not_null : not a_screen.is_default_pointer
-		do
-			apply_fill(a_screen, a_color)
+			apply_fill(screen, a_color)
 		end
 end

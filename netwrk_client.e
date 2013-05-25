@@ -14,13 +14,13 @@ feature{NETWORK_THREAD} -- Make
 
 	client_socket:NETWORK_STREAM_SOCKET
 
-	make
+	make (a_ip_address:STRING)
 		local
 			l_address:INET_ADDRESS
 			l_addr_factory:INET_ADDRESS_FACTORY
 		do
 			create l_addr_factory
-			l_address := l_addr_factory.create_from_name ("Localhost")
+			l_address := l_addr_factory.create_from_name (a_ip_address)
 			create client_socket.make_client_by_address_and_port (l_address, 12345)
 			client_socket.connect
 		end

@@ -117,32 +117,33 @@ feature {GAME} -- Activation des éléments
 	i_dot_activation
 		do
 			if easter_part_2_activated and not part_2_done then
-				if easter_ctr <= 7 then
+				if easter_ctr <= 6 then
 					i_dot.change_y (i_dot.y - 4)
 					i_dot.change_x (i_dot.x + 2)
 					i_dot.assign_ptr (easter_ctr + 1)
-				elseif easter_ctr <= 19 then
+				elseif easter_ctr <= 18 then
 					i_dot.change_x (i_dot.x + 8)
-				elseif easter_ctr <= 24 then
+				elseif easter_ctr <= 23 then
 					i_dot.change_y (i_dot.y + 4)
 					i_dot.change_x (i_dot.x + 4)
-					i_dot.assign_ptr (easter_ctr - 12)
-				elseif easter_ctr <= 31 then
+					i_dot.assign_ptr (easter_ctr - 11)
+				elseif easter_ctr <= 30 then
 					i_dot.change_y (i_dot.y + 6)
-				elseif easter_ctr <= 36 then
+				elseif easter_ctr <= 35 then
 					i_dot.change_y (i_dot.y + 2)
 					i_dot.change_x (i_dot.x - 2)
-					i_dot.assign_ptr (easter_ctr - 19)
-				elseif easter_ctr <= 50 then
+					i_dot.assign_ptr (easter_ctr - 18)
+				elseif easter_ctr <= 49 then
 					i_dot.change_x (i_dot.x - 12)
-				elseif easter_ctr <= 55 then
+				elseif easter_ctr <= 54 then
 					i_dot.change_y (i_dot.y - 2)
 					i_dot.change_x (i_dot.x - 2)
-					i_dot.assign_ptr (easter_ctr - 34)
+					i_dot.assign_ptr (easter_ctr - 33)
 				end
 				easter_ctr := easter_ctr + 1
 				if easter_ctr > 56 then
 					i_dot.assign_ptr (1)
+					i_dot.change_y (i_dot.y - 2)
 					crack_egg
 					easter_ctr := 1
 					part_2_done := true
@@ -164,10 +165,60 @@ feature {GAME} -- Affichage
 	apply_easter_egg_elements
 		do
 			y_part_activation
-			y_part.apply_to_screen
+			y_part.apply_to_screen (create {POINTER})
 			i_dot_activation
-			i_dot.apply_to_screen
-			egg.apply_to_screen
+			i_dot.apply_to_screen (create {POINTER})
+			egg.apply_to_screen (create {POINTER})
+			if egg_hits = 3 then
+				apply_easter_egg
+				egg_hits := 1
+			end
+		end
+
+	apply_easter_egg
+	-- Applique la région de l'image à sélectionner
+		local
+			l_image_rect_x:INTEGER_16
+			l_string_list:LIST[STRING]
+			l_baby:EASTER_EGG_ELEMENT
+			l_image_rect, l_memory_manager:POINTER
+		do
+			ctr_limit := 40
+			l_image_rect := l_memory_manager.memory_alloc({SDL_WRAPPER}.sizeof_SDL_Rect)
+			create {ARRAYED_LIST[STRING]} l_string_list.make (1)
+			l_string_list.extend ("Ressources/Images/Easter_egg/baby_sheet.png")
+			create l_baby.make (l_string_list, screen, 30, 30)
+			l_baby.assign_ptr (1)
+			l_baby.change_x (125)
+			l_baby.change_y (150)
+			{SDL_WRAPPER}.set_target_area_y(l_image_rect, 0)
+			{SDL_WRAPPER}.set_target_area_w(l_image_rect, l_baby.w // 8)
+			{SDL_WRAPPER}.set_target_area_h(l_image_rect, l_baby.h)
+			from
+				ctr := 0
+			until
+				ctr = ctr_limit
+			loop
+				l_image_rect_x := (ctr // 5) * 125
+				{SDL_WRAPPER}.set_target_area_x(l_image_rect, l_image_rect_x)
+
+				ctr := ctr + 1
+				l_baby.apply_to_screen (create{POINTER})
+				refresh
+			end
+			ensure
+				ctr_is_not_above_limit : ctr <= ctr_limit
+		end
+
+	refresh
+	-- Rafraichissment de l'écran
+		do
+			{SDL_WRAPPER}.SDL_Delay(12)
+			if
+				{SDL_WRAPPER}.SDL_Flip(screen) < 0
+			then
+				io.put_string ("Erreur lors du rafraîchissment de l'image. %N(SDL_Flip returned -1)")
+			end
 		end
 
 feature {GAME} -- Variables de classe public
@@ -176,7 +227,7 @@ feature {GAME} -- Variables de classe public
 
 feature {NONE} -- Variables de classe privées
 	screen:POINTER
-	easter_ctr:INTEGER_8
+	easter_ctr, ctr, ctr_limit:INTEGER_8
 	easter_part_1_activated, easter_part_2_activated:BOOLEAN
 	part_1_done, part_2_done:BOOLEAN
 	egg_crack_sound:SOUND

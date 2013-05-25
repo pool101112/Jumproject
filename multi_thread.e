@@ -25,7 +25,7 @@ feature {GAME} -- Make
 	player:PLAYER
 	is_server:BOOLEAN
 
-	make(a_is_server:BOOLEAN; a_enemy:ENEMY; a_player:PLAYER)
+	make(a_is_server:BOOLEAN; a_enemy:ENEMY; a_player:PLAYER; a_ip_address:STRING)
 		do
 			make_thread
 			stop_thread := False
@@ -35,7 +35,7 @@ feature {GAME} -- Make
 			if a_is_server then
 				create server.make
 			else
-				create client.make
+				create client.make (a_ip_address)
 			end
 		end
 

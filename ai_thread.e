@@ -45,14 +45,11 @@ feature {GAME} -- Thread pour l'IA
 	execute
 		local
 			l_player_box, l_enemy_box, l_ff_1_box, l_ff_2_box:TUPLE[left, right, top, bottom:INTEGER_16]
-			l_wait_ctr, l_lives:INTEGER_8
 		do
 			{SDL_WRAPPER}.SDL_Delay(500)
 
 			l_ff_1_box := ff_1_object.box
 			l_ff_2_box := ff_2_object.box
-
-			l_lives := player_object.lives
 
 			from
 			until
@@ -63,10 +60,10 @@ feature {GAME} -- Thread pour l'IA
 				l_enemy_box := enemy_object.box
 				move_mutex.unlock
 
-				if l_wait_ctr > 0 then
+				if enemy_object.wait_ctr > 0 then
 					enemy_object.set_stop_left
 					enemy_object.set_stop_right
-					l_wait_ctr := l_wait_ctr - 1
+					enemy_object.change_wait_ctr (enemy_object.wait_ctr - 1)
 				else
 					if l_enemy_box.top > l_player_box.bottom then
 						enemy_object.set_jump
@@ -119,15 +116,6 @@ feature {GAME} -- Thread pour l'IA
 						elseif  l_enemy_box.left > l_player_box.left then
 							enemy_object.set_move_left
 						end
-					end
-
-					if enemy_object.is_collision (player_object) then
-						enemy_object.collision_sound
-						l_wait_ctr := 127
-						enemy_object.set_stop_left
-						enemy_object.set_stop_right
-						l_lives := l_lives - 1
-						player_object.remaining_lives (l_lives)
 					end
 				end
 				{SDL_WRAPPER}.SDL_Delay(15)

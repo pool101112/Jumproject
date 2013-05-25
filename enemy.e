@@ -15,19 +15,24 @@ create
 
 feature {GAME} -- Image
 
-	make(a_screen:POINTER; a_ff_object, a_ff_object_2:FLYING_FLOOR)
+	player_object:PLAYER
+
+	make(a_screen:POINTER; a_ff_object, a_ff_object_2:FLYING_FLOOR; a_player_object:PLAYER)
 	-- Initialisation du sprite
+	local
+			l_string_list:LIST[STRING]
 		do
 			screen := a_screen
-			file_paths
-			create_img_ptr_list
-			create_img_ptr_new(go_left_path)
-			create_img_ptr_new(go_right_path)
-			create_img_ptr_new(wait_left_path)
-			create_img_ptr_new(wait_right_path)
-			create_img_ptr_new(jump_left_path)
-			create_img_ptr_new(jump_right_path)
-			assigner_img_ptr_from_array (1)
+			player_object := a_player_object
+			create {ARRAYED_LIST[STRING]} l_string_list.make (6)
+			l_string_list.extend ("Ressources/yoma_wait_left.png")
+			l_string_list.extend ("Ressources/yoma_wait_right.png")
+			l_string_list.extend ("Ressources/yoma_go_left.png")
+			l_string_list.extend ("Ressources/yoma_go_right.png")
+			l_string_list.extend ("Ressources/yoma_jump_left.png")
+			l_string_list.extend ("Ressources/yoma_jump_right.png")
+			create_image_list (l_string_list)
+
 			set_start(1112, 268)
 			set_velocity(4, 3)
 --			assigner_spawn
@@ -36,22 +41,21 @@ feature {GAME} -- Image
 			life := 100
 		end
 
-	file_paths
-	-- Association des ressources aux variables
+	create_image_list (a_path_list:LIST[STRING])
+	-- Cree une liste d'images
+		local
+			l_i:INTEGER
 		do
-			spawn_left_path := "Ressources/zawa_spawn_left.png"
-			wait_left_path := "Ressources/zawa_wait_left.png"
-			wait_right_path := "Ressources/zawa_wait_right.png"
-			go_left_path := "Ressources/zawa_go_left.png"
-			go_right_path := "Ressources/zawa_go_right.png"
-			jump_left_path := "Ressources/zawa_go_left.png"
-			jump_right_path := "Ressources/zawa_go_right.png"
-		end
-
-	assigner_ptr_image
-	-- Assigne l'image
-		do
-			assigner_sprite(2)
+			create_img_ptr_list
+			from
+				l_i := 1
+			until
+				l_i > a_path_list.count
+			loop
+				create_img_ptr(a_path_list[l_i])
+				l_i := l_i + 1
+			end
+			assigner_img_ptr (1)
 		end
 
 	assigner_spawn
@@ -64,6 +68,17 @@ feature {GAME} -- Image
 	-- Applique l'image à la fenêtre
 		do
 			apply_sprite_image_x_y(screen, 25)
+		end
+
+	collide_player
+		do
+			if is_collision (player_object) and wait_ctr = 0 then
+				collision_sound
+				wait_ctr := 127
+				set_stop_left
+				set_stop_right
+				player_object.reduce_live
+			end
 		end
 
 	apply_spawn
@@ -97,13 +112,18 @@ feature {GAME, AI_THREAD} -- AI Moving System
 			end
 		end
 
+	change_wait_ctr (a_wait_ctr:INTEGER_8)
+		do
+			wait_ctr := a_wait_ctr
+		end
+
 feature {ANY} -- Life
 	life:INTEGER
 
 	reduce_life
 		do
 			if not is_dead then
-				life := life - 20
+				life := life - 5
 			end
 
 			if life <= 0 then

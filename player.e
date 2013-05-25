@@ -19,19 +19,22 @@ create
 feature -- Images
 
 
-	make(a_player_number:INTEGER_8; a_screen:POINTER; a_ff_object, a_ff_object_2:FLYING_FLOOR)
+	make(a_player_number:INTEGER_8; a_screen:POINTER; a_ff_object, a_ff_object_2:FLYING_FLOOR; a_life_power_up:POWER_UPS)
 	-- Initialisation du sprite
+		local
+			l_string_list:LIST[STRING]
 		do
 			screen := a_screen
-			animation_files_path
-			create_img_ptr_list
-			create_img_ptr_new(go_left_path)
-			create_img_ptr_new(go_right_path)
-			create_img_ptr_new(wait_left_path)
-			create_img_ptr_new(wait_right_path)
-			create_img_ptr_new(jump_left_path)
-			create_img_ptr_new(jump_right_path)
-			assigner_img_ptr_from_array (1)
+			create {ARRAYED_LIST[STRING]} l_string_list.make (6)
+			l_string_list.extend ("Ressources/yoma_wait_left.png")
+			l_string_list.extend ("Ressources/yoma_wait_right.png")
+			l_string_list.extend ("Ressources/yoma_go_left.png")
+			l_string_list.extend ("Ressources/yoma_go_right.png")
+			l_string_list.extend ("Ressources/yoma_jump_left.png")
+			l_string_list.extend ("Ressources/yoma_jump_right.png")
+			create_image_list (l_string_list)
+			wait_ctr := 0
+
 			if (a_player_number = 0) then
 				set_start(556, 268)
 			else
@@ -40,30 +43,30 @@ feature -- Images
 			set_velocity(4, 3)
 			init_score
 			init_flying_floors (a_ff_object, a_ff_object_2)
+			init_bonus (a_life_power_up)
 			--assigner_spawn
 		end
 
-	animation_files_path
-	-- Association des ressources aux variables
+	create_image_list (a_path_list:LIST[STRING])
+	-- Cree une liste d'images
+		local
+			l_i:INTEGER
 		do
-			spawn_left_path := "Ressources/yoma_spawn_left.png"
-			wait_left_path := "Ressources/yoma_wait_left.png"
-			wait_right_path := "Ressources/yoma_wait_right.png"
-			go_left_path := "Ressources/yoma_go_left.png"
-			go_right_path := "Ressources/yoma_go_right.png"
-			jump_left_path := "Ressources/yoma_jump_left.png"
-			jump_right_path := "Ressources/yoma_jump_right.png"
-		end
-
-	assigner_ptr_image
-	-- Assigne l'image
-		do
-			create_img_ptr_new("Ressources/yoma_spawn_left.png")
+			create_img_ptr_list
+			from
+				l_i := 1
+			until
+				l_i > a_path_list.count
+			loop
+				create_img_ptr(a_path_list[l_i])
+				l_i := l_i + 1
+			end
+			assigner_img_ptr (1)
 		end
 
 	assign_ptr
 		do
-			img_ptr := img_ptr_list[1]
+			assigner_img_ptr (1)
 		end
 
 --	assigner_spawn
@@ -76,6 +79,15 @@ feature -- Images
 	-- Applique l'image à la fenêtre
 		do
 			apply_sprite_image_x_y(screen, 25)
+		end
+
+	collide_bonus:BOOLEAN
+		do
+			result := false
+			if is_collision(bonus_object) then
+				lives := lives + 1
+				result := true
+			end
 		end
 
 	apply_spawn
@@ -97,8 +109,10 @@ feature {ANY} -- Actions
 
 	shoot
 		do
-			create projectile.make (looking_right, current)
-			shooting := true
+			if not shooting then
+				create projectile.make (looking_right, current)
+				shooting := true
+			end
 		end
 
 	apply_proj (a_enemy:ENEMY)
@@ -114,16 +128,22 @@ feature {ANY} -- Actions
 feature {ANY} -- Lives
 	lives:INTEGER_8
 	score:SCORE
+	life_power_up:POWER_UPS
 
 	init_score
 		do
 			create score.make (25)
-			lives := 10
+			lives := 3
 		end
 
 	remaining_lives (a_lives:INTEGER_8)
 		do
 			lives := a_lives
+		end
+
+	reduce_live
+		do
+			lives := lives - 1
 		end
 
 	adjust_lives
