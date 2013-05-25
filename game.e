@@ -534,8 +534,6 @@ feature {NONE} -- Main
 				l_flying_floor.apply_flying_floor(a_screen)
 				l_ff_two.apply_flying_floor (a_screen)
 				l_timer.apply_text (a_screen, 5, 35)
-				l_highscore.apply_text (a_screen, 5, 5)
-				l_last_game.apply_text (a_screen, 5, 20)
 				refresh (a_screen, 12)
 				if l_ctr < 74 then
 					l_ctr := l_ctr + 1
